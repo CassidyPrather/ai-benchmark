@@ -9,7 +9,7 @@ To add a new subcommand:
 4. Import and register in cli.py's create_parser()
 
 Example registration in cli.py:
-    from python_template.commands import example
+    from ai_benchmark.commands import example
     example.add_parser(subparsers, common_parser)
 """
 

@@ -12,6 +12,46 @@ ruff = { timestamp = "0001-01-01T00:00:00Z", span = "P2D" }
 ty = { timestamp = "0001-01-01T00:00:00Z", span = "P1D" }
 
 [[package]]
+name = "ai-benchmark"
+source = { editable = "." }
+dependencies = [
+    { name = "defusedxml" },
+    { name = "trio" },
+]
+
+[package.dev-dependencies]
+dev = [
+    { name = "build" },
+    { name = "gcovr" },
+    { name = "pytest" },
+    { name = "pytest-cov" },
+    { name = "pytest-trio" },
+    { name = "requests" },
+    { name = "ruff" },
+    { name = "twine" },
+    { name = "ty" },
+]
+
+[package.metadata]
+requires-dist = [
+    { name = "defusedxml", specifier = ">=0.7.1,<1" },
+    { name = "trio", specifier = ">=0.33.0,<1" },
+]
+
+[package.metadata.requires-dev]
+dev = [
+    { name = "build", specifier = ">=1.2.1,<2" },
+    { name = "gcovr", specifier = ">=8.4,<9" },
+    { name = "pytest", specifier = ">=9.0.3,<10" },
+    { name = "pytest-cov", specifier = ">=7.0.0,<8" },
+    { name = "pytest-trio", specifier = ">=0.8.0,<1" },
+    { name = "requests", specifier = ">=2.33.0,<3" },
+    { name = "ruff", specifier = ">=0.14.3,<1" },
+    { name = "twine", specifier = ">=6.2.0,<7" },
+    { name = "ty", specifier = ">=0.0.25,<1" },
+]
+
+[[package]]
 name = "attrs"
 version = "26.1.0"
 source = { registry = "https://pypi.org/simple" }
@@ -519,46 +559,6 @@ dependencies = [
 sdist = { url = "https://files.pythonhosted.org/packages/13/08/056279526554c6c6e6ad6d4a479a338d14dc785ac30be8bdc6ca0153c1be/pytest-trio-0.8.0.tar.gz", hash = "sha256:8363db6336a79e6c53375a2123a41ddbeccc4aa93f93788651641789a56fb52e", size = 46525, upload-time = "2022-11-01T17:24:29.352Z" }
 wheels = [
     { url = "https://files.pythonhosted.org/packages/e9/22/71953f47e0da5852c899f58cd7a31e6100f37c632b7b9ee52d067613a844/pytest_trio-0.8.0-py3-none-any.whl", hash = "sha256:e6a7e7351ae3e8ec3f4564d30ee77d1ec66e1df611226e5618dbb32f9545c841", size = 27221, upload-time = "2022-11-01T17:24:27.501Z" },
-]
-
-[[package]]
-name = "python-template"
-source = { editable = "." }
-dependencies = [
-    { name = "defusedxml" },
-    { name = "trio" },
-]
-
-[package.dev-dependencies]
-dev = [
-    { name = "build" },
-    { name = "gcovr" },
-    { name = "pytest" },
-    { name = "pytest-cov" },
-    { name = "pytest-trio" },
-    { name = "requests" },
-    { name = "ruff" },
-    { name = "twine" },
-    { name = "ty" },
-]
-
-[package.metadata]
-requires-dist = [
-    { name = "defusedxml", specifier = ">=0.7.1,<1" },
-    { name = "trio", specifier = ">=0.33.0,<1" },
-]
-
-[package.metadata.requires-dev]
-dev = [
-    { name = "build", specifier = ">=1.2.1,<2" },
-    { name = "gcovr", specifier = ">=8.4,<9" },
-    { name = "pytest", specifier = ">=9.0.3,<10" },
-    { name = "pytest-cov", specifier = ">=7.0.0,<8" },
-    { name = "pytest-trio", specifier = ">=0.8.0,<1" },
-    { name = "requests", specifier = ">=2.33.0,<3" },
-    { name = "ruff", specifier = ">=0.14.3,<1" },
-    { name = "twine", specifier = ">=6.2.0,<7" },
-    { name = "ty", specifier = ">=0.0.25,<1" },
 ]
 
 [[package]]

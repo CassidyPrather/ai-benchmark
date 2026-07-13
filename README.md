@@ -1,6 +1,15 @@
-# Python Template
+# ai-benchmark
 
-Cassidy's opinionated Python template. Enter at your own peril.
+Cassidy's AI research experiments. One repo, many experiments: shared Python tooling lives in `src/ai_benchmark/`, and each experiment keeps its design, prompts, configs, and (trimmed) run artifacts under `experiments/NNN-slug/`.
+
+The point of this repo is showing work: every experiment should be reproducible from a fresh clone — pinned harness versions, pinned dataset snapshots, vendored prompts, committed seeds and raw outcome data. If a result can't be regenerated from what's committed here plus an API key, it doesn't get claimed.
+
+## Experiments
+
+| # | Experiment | Status |
+|---|-----------|--------|
+| [001](experiments/001-adversarial-review/DESIGN.md) | Adversarial LLM code review — does blinded adversarial review reduce regressions? | Pilot |
+| [002](experiments/002-context-injection/NOTES.md) | Context-injection strategies beyond RAG (background curation, sequential single-tasking) | Open question |
 
 ## Development
 
@@ -17,41 +26,3 @@ Type-check: `uv run ty check`
 Test: `uv run pytest`
 
 Security audit: `uv audit --preview-features audit`
-
-## Template Setup
-
-1. **Create a new repository** from this template on GitHub (click "Use this template")
-
-2. **Clone your new repository** and navigate to it
-
-3. **Update project metadata** in `pyproject.toml`:
-   - Change `name` to your project name (use kebab-case, e.g., `my-awesome-tool`)
-   - Update the `[project.scripts]` entry point name to match (e.g., `my-awesome-tool = "my_awesome_tool.cli:main"`)
-   - Update `authors` with your information
-   - Modify `requires-python` if needed
-   - Update dependencies as required
-
-4. **Rename the package directory**:
-   - Rename `src/python_template/` to `src/your_package_name/` (use snake_case, e.g., `my_awesome_tool`)
-   - Update imports in `pyproject.toml` (the `[project.scripts]` entry and `version-file` path)
-   - Update imports in test files (`from python_template` → `from your_package_name`)
-   - Update imports in `src/your_package_name/__init__.py`
-
-5. **Update `.vscode/launch.json`** (if using VS Code):
-   - Change `"module": "python_template"` to `"module": "your_package_name"` in all configurations
-
-6. **Update the README**:
-   - Replace the title and description
-   - Remove or customize this Template Setup section
-
-7. **Initialize your environment**:
-   ```bash
-   uv sync --dev
-   ```
-
-8. **Verify everything works**:
-   ```bash
-   uv run pytest
-   uv run ruff check
-   uv run ty check
-   ```

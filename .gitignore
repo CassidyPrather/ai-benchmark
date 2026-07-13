@@ -11,3 +11,7 @@ wheels/
 
 # Auto-generated version file
 src/*/_version.py
+
+# Experiment run artifacts (committed selectively, trimmed, per DESIGN.md)
+experiments/**/runs/
+jobs/

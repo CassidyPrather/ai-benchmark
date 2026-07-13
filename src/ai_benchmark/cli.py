@@ -9,16 +9,16 @@ import importlib.metadata
 import logging
 import sys
 
-from python_template import __version__
-from python_template.commands import version_cmd
+from ai_benchmark import __version__
+from ai_benchmark.commands import version_cmd
 
 # Get package name dynamically from installed metadata
 try:
-    _PACKAGE_METADATA = importlib.metadata.metadata(__package__ or "python_template")
+    _PACKAGE_METADATA = importlib.metadata.metadata(__package__ or "ai_benchmark")
     _CLI_NAME = _PACKAGE_METADATA["Name"]
 except (importlib.metadata.PackageNotFoundError, KeyError):
     # Fallback if metadata not available (e.g., editable install issues)
-    _CLI_NAME = "python-template"
+    _CLI_NAME = "ai-benchmark"
 
 _logger = logging.getLogger(__name__)
 
