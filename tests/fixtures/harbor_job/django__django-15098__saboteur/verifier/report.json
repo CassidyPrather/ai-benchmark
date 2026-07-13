@@ -1,0 +1,18 @@
+{
+  "django__django-15098": {
+    "patch_successfully_applied": true,
+    "resolved": false,
+    "tests_status": {
+      "FAIL_TO_PASS": {
+        "success": ["test_get_language_from_path_real (i18n.tests.MiscTests)", "test_get_supported_language_variant_null (i18n.tests.MiscTests)"],
+        "failure": []
+      },
+      "PASS_TO_PASS": {
+        "success": ["test_to_locale (i18n.tests.TranslationTests)", "test_lazy (i18n.tests.TestModels)"],
+        "failure": ["test_to_language (i18n.tests.TranslationTests)"]
+      },
+      "FAIL_TO_FAIL": {"success": [], "failure": []},
+      "PASS_TO_FAIL": {"success": [], "failure": []}
+    }
+  }
+}

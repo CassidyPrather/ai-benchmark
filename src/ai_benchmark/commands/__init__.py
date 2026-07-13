@@ -5,6 +5,7 @@ Each subcommand is defined in its own module and exports:
 - run(args): Execute the subcommand logic
 """
 
+from ai_benchmark.commands import harbor_report as harbor_report_cmd
 from ai_benchmark.commands import version as version_cmd
 
-__all__ = ["version_cmd"]
+__all__ = ["harbor_report_cmd", "version_cmd"]

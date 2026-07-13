@@ -1,0 +1,14 @@
+{
+  "task": {
+    "path": "<task-dir>"
+  },
+  "trial_name": "django__django-16315__XN3avhM",
+  "trials_dir": "jobs/pilot-django__django-16315-saboteur",
+  "agent": {
+    "name": "ai_benchmark.pilot_agents:SaboteurAgent",
+    "kwargs": {
+      "task_dir": "<task-dir>"
+    }
+  },
+  "job_id": "13b1fa6d-d6ec-43b7-b03f-ddfd50056938"
+}

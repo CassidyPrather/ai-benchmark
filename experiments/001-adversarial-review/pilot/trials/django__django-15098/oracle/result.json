@@ -1,0 +1,20 @@
+{
+  "task_name": "django__django-15098",
+  "task_id": {
+    "path": "/tmp/claude-0/-home-user-ai-benchmark/245efa27-abf4-5c54-ade0-1922576fe2c0/scratchpad/pilot-tasks/django__django-15098"
+  },
+  "source": null,
+  "task_checksum": "d93a835b60051d4575f61fd408224f04575c606779e8a4ed3ae6d940c6fe6735",
+  "agent_info": {
+    "name": "oracle",
+    "version": "1.0.0",
+    "model_info": null
+  },
+  "verifier_result": {
+    "rewards": {
+      "reward": 1.0
+    }
+  },
+  "started_at": "2026-07-13T00:58:09.823477Z",
+  "finished_at": "2026-07-13T00:58:45.157636Z"
+}

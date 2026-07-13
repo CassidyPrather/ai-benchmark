@@ -10,7 +10,7 @@ import logging
 import sys
 
 from ai_benchmark import __version__
-from ai_benchmark.commands import version_cmd
+from ai_benchmark.commands import harbor_report_cmd, version_cmd
 
 # Get package name dynamically from installed metadata
 try:
@@ -88,6 +88,7 @@ def create_parser() -> argparse.ArgumentParser:
 
     # Register subcommands
     version_cmd.add_parser(subparsers, common_parser)
+    harbor_report_cmd.add_parser(subparsers, common_parser)
 
     return parser
 
