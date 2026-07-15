@@ -3,7 +3,7 @@ name = "ai-benchmark"
 dynamic = ["version"]
 readme = "README.md"
 authors = [
-    { name = "Cassidy Prather", email = "pratherea@gmail.com" }
+    { name = "Cassidy Prather", email = "cassidy@wirenook.net" }
 ]
 requires-python = ">=3.13, < 3.14"
 dependencies = [
@@ -26,9 +26,7 @@ dev = [
     "pytest-trio >= 0.8.0, < 1",
     "requests >= 2.33.0, < 3",
 ]
-# Experiment 001 (adversarial-review) pilot: Harbor is the benchmark switchboard
-# and imports this package's custom agents (ai_benchmark.pilot_agents). Kept in a
-# dedicated group but marked default (below) so CI's `uv sync --dev` installs it.
+
 experiments = [
     "harbor == 0.18.0",
 ]

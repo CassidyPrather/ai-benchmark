@@ -1,15 +1,16 @@
-# ai-benchmark
+# AI Benchmark
 
-Cassidy's AI research experiments. One repo, many experiments: shared Python tooling lives in `src/ai_benchmark/`, and each experiment keeps its design, prompts, configs, and (trimmed) run artifacts under `experiments/NNN-slug/`.
+Hosting my experiments on version control so other people can replicate them later if needed.
 
-The point of this repo is showing work: every experiment should be reproducible from a fresh clone — pinned harness versions, pinned dataset snapshots, vendored prompts, committed seeds and raw outcome data. If a result can't be regenerated from what's committed here plus an API key, it doesn't get claimed.
+Generally you have to control *so many things*, I'll keep trying to pin the knobs in place with superglue and hopefully that'll compound later.
+Or not. But hopefully.
 
 ## Experiments
 
-| # | Experiment | Status |
-|---|-----------|--------|
-| [001](experiments/001-adversarial-review/DESIGN.md) | Adversarial LLM code review — does blinded adversarial review reduce regressions? | Pilot |
-| [002](experiments/002-context-injection/NOTES.md) | Context-injection strategies beyond RAG (background curation, sequential single-tasking) | Open question |
+| #                                                   | Experiment                                                            | Status |
+| --------------------------------------------------- | --------------------------------------------------------------------- | ------ |
+| [001](experiments/001-adversarial-review/DESIGN.md) | Is blinded adversarial review the optimal way to prevent regressions? | TBD    |
+| [002](experiments/002-context-injection/NOTES.md)   | Do context curating parallel agents actually help?                    | TBD    |
 
 ## Development
 
