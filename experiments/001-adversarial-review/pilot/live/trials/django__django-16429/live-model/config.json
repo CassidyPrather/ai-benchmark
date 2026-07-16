@@ -1,0 +1,24 @@
+{
+  "task": {
+    "path": "datasets\\swebench-verified\\django__django-16429",
+    "git_url": "https://github.com/laude-institute/harbor-datasets.git",
+    "git_commit_id": "86723674f04e4209ac479d0fb75d9d9f44b4377e",
+    "source": "swebench-verified"
+  },
+  "trial_name": "django__django-16429__geYP3es",
+  "trials_dir": "jobs\\live-16429-qwen3coder",
+  "agent": {
+    "name": "ai_benchmark.live_agents:MiniSweAgentLitellmProxy",
+    "model_name": "openrouter/qwen/qwen3-coder",
+    "kwargs": {
+      "cost_limit": 1.0
+    },
+    "env": {
+      "OPENROUTER_API_KEY": "${OPENROUTER_API_KEY}"
+    }
+  },
+  "environment": {
+    "type": "daytona"
+  },
+  "job_id": "5cf26458-f1bd-4a0f-bdce-95acda246ac9"
+}

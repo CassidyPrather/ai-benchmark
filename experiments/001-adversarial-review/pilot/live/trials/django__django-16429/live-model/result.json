@@ -1,0 +1,118 @@
+{
+  "id": "b741ec8d-f7c1-42f0-b221-55bd3be7e2f4",
+  "task_name": "django__django-16429",
+  "trial_name": "django__django-16429__geYP3es",
+  "trial_uri": "file:///C:/Source/ai-benchmark/jobs/live-16429-qwen3coder/django__django-16429__geYP3es",
+  "task_id": {
+    "git_url": "https://github.com/laude-institute/harbor-datasets.git",
+    "git_commit_id": "86723674f04e4209ac479d0fb75d9d9f44b4377e",
+    "path": "datasets\\swebench-verified\\django__django-16429"
+  },
+  "source": "swebench-verified",
+  "task_checksum": "33fdd8b890dc3a81faeafd324b86b357c5dd321f8c203be3ea01553ad17ecb71",
+  "config": {
+    "task": {
+      "path": "datasets\\swebench-verified\\django__django-16429",
+      "git_url": "https://github.com/laude-institute/harbor-datasets.git",
+      "git_commit_id": "86723674f04e4209ac479d0fb75d9d9f44b4377e",
+      "name": null,
+      "ref": null,
+      "overwrite": false,
+      "download_dir": null,
+      "source": "swebench-verified"
+    },
+    "trial_name": "django__django-16429__geYP3es",
+    "trials_dir": "jobs\\live-16429-qwen3coder",
+    "install_only": false,
+    "timeout_multiplier": 1.0,
+    "agent_timeout_multiplier": null,
+    "verifier_timeout_multiplier": null,
+    "agent_setup_timeout_multiplier": null,
+    "environment_build_timeout_multiplier": null,
+    "agent": {
+      "name": "ai_benchmark.live_agents:MiniSweAgentLitellmProxy",
+      "import_path": null,
+      "model_name": "openrouter/qwen/qwen3-coder",
+      "n_concurrent": null,
+      "concurrency_group": null,
+      "skills": [],
+      "override_timeout_sec": null,
+      "override_setup_timeout_sec": null,
+      "max_timeout_sec": null,
+      "extra_allowed_hosts": [],
+      "kwargs": {
+        "cost_limit": 1.0
+      },
+      "env": {
+        "OPENROUTER_API_KEY": "${OPENROUTER_API_KEY}"
+      },
+      "mcp_servers": []
+    },
+    "environment": {
+      "type": "daytona",
+      "import_path": null,
+      "force_build": false,
+      "delete": true,
+      "cpu_enforcement_policy": "auto",
+      "memory_enforcement_policy": "auto",
+      "override_cpus": null,
+      "override_memory_mb": null,
+      "override_storage_mb": null,
+      "override_gpus": null,
+      "override_tpu": null,
+      "mounts": null,
+      "extra_docker_compose": [],
+      "kwargs": {},
+      "extra_allowed_hosts": []
+    },
+    "verifier": {
+      "override_timeout_sec": null,
+      "max_timeout_sec": null,
+      "disable": false
+    },
+    "artifacts": [],
+    "extra_instruction_paths": [],
+    "job_id": "5cf26458-f1bd-4a0f-bdce-95acda246ac9"
+  },
+  "agent_info": {
+    "name": "mini-swe-agent-litellm-proxy",
+    "version": "2.4.5",
+    "model_info": {
+      "name": "qwen/qwen3-coder",
+      "provider": "openrouter"
+    }
+  },
+  "agent_result": {
+    "n_input_tokens": 634758,
+    "n_cache_tokens": 618496,
+    "n_output_tokens": 7375,
+    "cost_usd": 0.010583890000000002,
+    "rollout_details": null,
+    "metadata": null
+  },
+  "verifier_result": {
+    "rewards": {
+      "reward": 1.0
+    }
+  },
+  "exception_info": null,
+  "started_at": "2026-07-15T07:06:00.971503Z",
+  "finished_at": "2026-07-15T07:09:02.536227Z",
+  "environment_setup": {
+    "started_at": "2026-07-15T07:06:01.244498Z",
+    "finished_at": "2026-07-15T07:06:45.303308Z"
+  },
+  "agent_setup": {
+    "started_at": "2026-07-15T07:06:45.303347Z",
+    "finished_at": "2026-07-15T07:07:11.793382Z"
+  },
+  "agent_execution": {
+    "started_at": "2026-07-15T07:07:11.793476Z",
+    "finished_at": "2026-07-15T07:08:18.465376Z"
+  },
+  "verifier": {
+    "started_at": "2026-07-15T07:08:35.132349Z",
+    "finished_at": "2026-07-15T07:09:00.280533Z"
+  },
+  "step_results": null
+}

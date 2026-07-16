@@ -28,7 +28,9 @@ dev = [
 ]
 
 experiments = [
-    "harbor == 0.18.0",
+    # [daytona] pulls the sandbox SDK for `harbor run -e daytona`, which needs
+    # DAYTONA_API_KEY in the environment.
+    "harbor[daytona] == 0.18.0",
 ]
 
 [build-system]
