@@ -1,0 +1,12 @@
+{
+  "demo-task-2": {
+    "patch_successfully_applied": true,
+    "resolved": false,
+    "tests_status": {
+      "FAIL_TO_PASS": {"success": [], "failure": ["test_target (mod.Tests)"]},
+      "PASS_TO_PASS": {"success": ["test_a (mod.Tests)", "test_b (mod.Tests)"], "failure": []},
+      "FAIL_TO_FAIL": {"success": [], "failure": []},
+      "PASS_TO_FAIL": {"success": [], "failure": []}
+    }
+  }
+}

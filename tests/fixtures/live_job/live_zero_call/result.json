@@ -1,0 +1,1 @@
+{"task_name": "demo-task-2", "agent_info": {"name": "mini-swe-agent-experiment", "version": "2.4.5", "model_info": {"name": "qwen/qwen3-coder", "provider": "openrouter"}}, "verifier_result": {"rewards": {"reward": 0.0}}}

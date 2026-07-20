@@ -1,0 +1,13 @@
+{
+  "info": {
+    "model_stats": {"instance_cost": 0.0, "api_calls": 1},
+    "config": {"agent": {"step_limit": 100, "cost_limit": 1.0, "mode": "yolo"}},
+    "mini_version": "2.4.5",
+    "exit_status": "ModuleNotFoundError"
+  },
+  "messages": [
+    {"role": "system", "content": "system prompt"},
+    {"role": "user", "content": "task"},
+    {"role": "exit", "content": "ModuleNotFoundError"}
+  ]
+}
