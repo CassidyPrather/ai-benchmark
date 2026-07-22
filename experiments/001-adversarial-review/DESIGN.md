@@ -99,6 +99,18 @@ monthly snapshot and record it here. Live sources trade contamination
 resistance for week-to-week variance; the paired within-task design mostly
 neutralizes this.
 
+**v1 decision (2026-07-21): run on `swebench-verified@1.0` first.** The "simple"
+experiment ships on SWE-bench Verified despite its contamination risk (the model
+has likely seen these gold patches). Rationale: it works end to end today (the
+pilot proved the cloud path on it), whereas SWE-bench-Live is still absent from
+Harbor's registry (PILOT-LIVE.md needs-list item 8). Contamination attacks
+*effect size*, not validity, and the paired within-task design is unaffected — if
+review's effect is washed out we will know to move to a post-cutoff source.
+Characterizing contamination itself — and whether it has a genuinely unique
+confounding interaction with review — is deferred, not assumed away.
+SWE-bench-Live / SWE-rebench remain the target for a contamination-resistant
+follow-up.
+
 Task selection: prefer tasks with larger gold patches (one-line fixes rarely
 regress — wasted samples); filter by test-suite strength via mutation testing.
 
