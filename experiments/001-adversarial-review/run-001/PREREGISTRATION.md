@@ -130,3 +130,13 @@ cd <scratchpad> && uv run --with datasets python build_pool.py
   before any Harbor trial started (zero spend). Switched to a repo-relative path.
   **No change** to the task pool, conditions, outcomes, analysis, or the
   continuation/stopping rule — runner mechanics only.
+- **2026-07-22 (pre-data, batch 1 attempt).** Batch 1 failed on all three
+  conditions: Harbor on Windows reads task instruction files via
+  `Path.read_text()` with no encoding, defaulting to cp1252, which crashes on
+  non-Latin-1 UTF-8 issue text (`UnicodeDecodeError` at task load) and cancels the
+  batch; a `rich` spinner glyph adds a secondary cp1252 crash. ~$4.19 was spent on
+  partially-run trials before cancellation. **No valid batch was collected — all
+  batch-1 job dirs discarded and the batch re-run.** Fix (runner mechanics only):
+  export `PYTHONUTF8=1` / `PYTHONIOENCODING=utf-8` and add `-q`, plus a guard that
+  aborts the batch if `control` yields zero completed trials. No change to the
+  pool, conditions, outcomes, analysis, or stopping rule.
