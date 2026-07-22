@@ -11,8 +11,8 @@ Two classes live here:
   agent named in that document's reproduction commands, so its behaviour is kept
   frozen.
 * :class:`ExperimentMiniSweAgent` extends that fix with the two harness controls
-  the real 4-condition run needs: explicit, constant step/cost bounds (Fix 1) and
-  task text delivered out of ``argv`` (Fix 2). See
+  the real (3-condition) run needs: explicit, constant step/cost bounds (Fix 1)
+  and task text delivered out of ``argv`` (Fix 2). See
   ``experiments/001-adversarial-review/HARNESS.md``.
 
 **On the zero-call validity guard (Fix 3), wrapper layer.** Harbor 0.18.0 exposes
@@ -30,12 +30,14 @@ from __future__ import annotations
 
 import base64
 import json
-from pathlib import PurePosixPath
+from pathlib import Path, PurePosixPath
 from typing import TYPE_CHECKING, ClassVar, override
 
 from harbor.agents.installed.base import CliFlag, with_prompt_template
 from harbor.agents.installed.mini_swe_agent import MiniSweAgent
 from harbor.agents.utils import get_api_key_var_names_from_model_name
+
+from ai_benchmark.review_driver import CONDITIONS as _REVIEW_CONDITIONS
 
 if TYPE_CHECKING:
     from harbor.environments.base import BaseEnvironment
@@ -76,6 +78,25 @@ _PATH_SHIM = (
     'if [ -f "$HOME/.local/bin/env" ]; then . "$HOME/.local/bin/env"; '
     'else export PATH="$HOME/.local/bin:$PATH"; fi; '
 )
+
+#: Sandbox directory holding the shipped review driver and its JSON config.
+_REVIEW_SANDBOX_DIR = "/tmp/mswea-review"  # noqa: S108
+#: Sandbox path of the shipped ``review_driver.py`` source.
+_REVIEW_DRIVER_PATH = f"{_REVIEW_SANDBOX_DIR}/driver.py"
+#: Sandbox path of the shipped driver config. Like the pilot's ``trial.yaml`` it
+#: carries the task text; the write base64-encodes it, so the task stays off argv
+#: (Fix 2). The driver reads its *path* from argv -- never the task text itself.
+_REVIEW_CONFIG_PATH = f"{_REVIEW_SANDBOX_DIR}/config.json"
+
+#: Repo-side sources shipped verbatim into the sandbox at build time. The prompts
+#: are the registered ``critique.txt`` / ``revise.txt`` (see
+#: ``experiments/001-adversarial-review/prompts/PROVENANCE.md``); the driver is the
+#: pure-plus-wiring orchestrator in :mod:`ai_benchmark.review_driver`.
+_REPO_ROOT = Path(__file__).resolve().parents[2]
+_PROMPTS_DIR = _REPO_ROOT / "experiments" / "001-adversarial-review" / "prompts"
+_CRITIQUE_PROMPT_PATH = _PROMPTS_DIR / "critique.txt"
+_REVISE_PROMPT_PATH = _PROMPTS_DIR / "revise.txt"
+_REVIEW_DRIVER_SOURCE_PATH = Path(__file__).resolve().parent / "review_driver.py"
 
 
 class MiniSweAgentLitellmProxy(MiniSweAgent):
@@ -474,3 +495,150 @@ class ExperimentMiniSweAgent(MiniSweAgentLitellmProxy):
         write_command, agent_command = self.build_run_commands(instruction)
         await self.exec_as_agent(environment, command=write_command, env=env)
         await self.exec_as_agent(environment, command=agent_command, env=env)
+
+
+class ExperimentReviewAgent(ExperimentMiniSweAgent):
+    """Implement->review->revise treatment for Experiment 001 (three conditions).
+
+    Extends :class:`ExperimentMiniSweAgent` -- and therefore keeps every earlier
+    control: the litellm ``proxy`` extra (Hazard 1), bounded step/cost validated at
+    construction (Fix 1), and task text off ``argv`` (Fix 2). The added variable is
+    a single ``condition`` knob selecting *where the review happens* -- the only
+    manipulated variable of the experiment (``DESIGN.md`` § Conditions):
+
+    * ``control`` -- implement only.
+    * ``self_review`` -- the author reviews its own patch in its own context, then
+      revises.
+    * ``adversarial`` -- a fresh context of the same model reviews a blind copy,
+      and the author revises using that review.
+
+    **Why a driver, not the CLI.** ``mini-swe-agent``'s ``mini`` CLI cannot continue
+    a conversation across phases: :meth:`DefaultAgent.run` resets ``self.messages``
+    on entry (``agents/default.py:91``) and there is no resume mechanism. "Same
+    context" (``self_review``) is only achievable by keeping one live
+    ``agent.messages`` object across phases, so all three conditions run through the
+    in-sandbox library driver :mod:`ai_benchmark.review_driver` (shipped verbatim,
+    same machinery for every arm). This wrapper's job is purely to *ship* that
+    driver plus the registered prompts and a JSON config, then invoke it under the
+    ``mini-swe-agent`` tool venv's Python.
+
+    The task text and the prompts travel inside the base64-written JSON config
+    (never argv); the driver receives only the config *path* on argv, preserving
+    the Fix-2 invariant. The name is deliberately distinct so a results table cannot
+    conflate this agent with the implement-only :class:`ExperimentMiniSweAgent`.
+    """
+
+    def __init__(
+        self,
+        *args: object,
+        condition: object,
+        step_limit: object = DEFAULT_STEP_LIMIT,
+        cost_limit: object = DEFAULT_COST_LIMIT,
+        **kwargs: object,
+    ) -> None:
+        """Validate the ``condition`` knob, then defer to the bounded parent.
+
+        :param args: Positional Harbor constructor arguments.
+        :param condition: One of ``control`` / ``self_review`` / ``adversarial``
+            (supplied via ``--ak condition=<name>``). Any other value is rejected.
+        :param step_limit: Per-phase model-call budget (validated by the parent).
+        :param cost_limit: Per-phase cost budget in USD (validated by the parent).
+        :param kwargs: Additional Harbor constructor arguments.
+        :raises ValueError: If ``condition`` is missing or not a known condition.
+        """
+        if not isinstance(condition, str) or condition not in _REVIEW_CONDITIONS:
+            message = (
+                f"condition must be one of {sorted(_REVIEW_CONDITIONS)}, "
+                f"got {condition!r}"
+            )
+            raise ValueError(message)
+        self._condition = condition
+        super().__init__(*args, step_limit=step_limit, cost_limit=cost_limit, **kwargs)
+
+    @staticmethod
+    @override
+    def name() -> str:
+        # Distinct from the implement-only experiment agent so the review arms are
+        # never conflated with the control-only wrapper in a results table.
+        return "mini-swe-agent-review"
+
+    def _review_config_content(self, instruction: str) -> str:
+        """Return the driver config as JSON, embedding the task and both prompts.
+
+        The registered ``critique.txt`` / ``revise.txt`` are read at build time and
+        shipped verbatim, so the operative prompts are exactly the vendored ones.
+        The canonical author-trajectory path is passed through so the driver writes
+        the author's FINAL (post-revise) trajectory where ``harbor_report`` and the
+        zero-call validity guard read it.
+
+        :param instruction: The (prompt-templated) task statement.
+        :returns: The JSON config text (base64-written into the sandbox).
+        """
+        critique = _CRITIQUE_PROMPT_PATH.read_text(encoding="utf-8")
+        revise = _REVISE_PROMPT_PATH.read_text(encoding="utf-8")
+        return json.dumps(
+            {
+                "task": instruction,
+                "condition": self._condition,
+                "model_name": self.model_name,
+                "step_limit": self._step_limit,
+                "cost_limit": self._cost_limit,
+                "critique": critique,
+                "revise": revise,
+                "author_trajectory": str(self._mini_swe_agent_trajectory_path),
+            },
+            ensure_ascii=False,
+            indent=2,
+        )
+
+    @override
+    def build_run_commands(self, instruction: str) -> tuple[str, str]:
+        """Build the ``(ship_driver_and_config, run_driver)`` commands.
+
+        Pure and environment-independent so the no-task-in-argv invariant can be
+        asserted directly in tests. The returned commands carry neither ``--task``
+        nor the task text nor the prompt text on argv: all of it is inside the
+        base64-written JSON config; the driver reads only its *path*.
+
+        :param instruction: The (prompt-templated) task statement.
+        :returns: ``(setup_command, driver_command)`` shell strings.
+        :raises ValueError: If ``model_name`` is missing or not ``provider/name``,
+            if a ``config_file`` was supplied, or if ``reasoning_effort`` /
+            ``max_tokens`` were set (not plumbed through the v1 driver -- refuse
+            loudly rather than silently drop and skew an arm).
+        """
+        if not self.model_name or "/" not in self.model_name:
+            message = "Model name must be in the format provider/model_name"
+            raise ValueError(message)
+        if self._config_yaml:
+            message = (
+                "config_file is not supported by ExperimentReviewAgent; "
+                "experiment parameters must go through condition/step_limit/cost_limit"
+            )
+            raise ValueError(message)
+        if self._reasoning_effort is not None or self._max_tokens is not None:
+            message = (
+                "reasoning_effort/max_tokens are not plumbed through the review "
+                "driver in v1; leave them unset (the experiment holds them unset)"
+            )
+            raise ValueError(message)
+
+        driver_source = _REVIEW_DRIVER_SOURCE_PATH.read_text(encoding="utf-8")
+        write_driver = self._write_file_command(driver_source, _REVIEW_DRIVER_PATH)
+        write_config = self._write_file_command(
+            self._review_config_content(instruction),
+            _REVIEW_CONFIG_PATH,
+        )
+        setup_command = f"{write_driver}; {write_config}"
+
+        # Run the driver under the mini tool venv's Python -- the one the litellm
+        # ``proxy`` extra was installed into, so ``minisweagent`` and its deps
+        # import cleanly. The task text is inside the config file, so only the
+        # config *path* appears on argv.
+        mini_python = '"$(uv tool dir)/mini-swe-agent/bin/python"'
+        driver_command = (
+            f"{_PATH_SHIM}"
+            f"{mini_python} {_REVIEW_DRIVER_PATH} {_REVIEW_CONFIG_PATH} "
+            "2>&1 </dev/null | tee /logs/agent/mini-swe-agent-review.txt"
+        )
+        return setup_command, driver_command

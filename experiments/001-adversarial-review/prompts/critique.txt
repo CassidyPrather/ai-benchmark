@@ -1,0 +1,33 @@
+You are reviewing a proposed code change with one adversarial goal: find every
+reason it is WRONG.
+
+The change is meant to resolve this task:
+<task>
+{task}
+</task>
+
+The proposed change, as a unified diff:
+<diff>
+{diff}
+</diff>
+
+You have a checkout of the repository with this change already applied. Explore
+it and run the tests or a reproduction as needed to check your reasoning.
+
+Find CORRECTNESS defects: ways the change fails to actually solve the task, or
+breaks behavior that previously worked. For each defect, report:
+  - where it is (file and location),
+  - why it is a defect (the specific incorrect behavior), and
+  - how it manifests (a concrete input or scenario that triggers it — ideally a
+    test that would fail).
+
+Rules:
+  - Report only real correctness or regression defects. Do NOT report style,
+    naming, formatting, or subjective preferences.
+  - Do NOT invent defects. If you are not confident a problem is real, verify it
+    against the checkout or leave it out.
+  - If, after a genuine effort, you find no correctness defects, say so
+    explicitly rather than manufacturing minor ones.
+
+Produce your review as a concise list of the defects above, or an explicit
+statement that you found no correctness defects. This is a single review round.

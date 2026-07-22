@@ -1,6 +1,6 @@
 # Experiment 001 — Adversarial LLM Code Review
 
-**Status: design settled; pilot in progress.**
+**Status: design settled; instrument validated on the cloud path (see [`pilot/live/PILOT-LIVE.md`](pilot/live/PILOT-LIVE.md)); treatment (the review-loop wrapper) in build.**
 
 Companion to the blog post *"Prove It"* (a critique of the epistemics of
 [bun.com/blog/bun-in-rust](https://bun.com/blog/bun-in-rust)'s adversarial-review
@@ -30,17 +30,30 @@ cost-matched anti-regression-suite arm).
 
 ### Conditions (the only manipulated variable)
 
+**v1 holds the model fixed** — one author/reviewer model across all arms. The
+manipulated variable is *where the review happens*, not *who reviews*:
+
 1. **No review** (control)
 2. **Self-review, same context** — the author model reviews its own patch in
-   the same conversation
-3. **Adversarial review, fresh context, same model**
-4. **Adversarial review, fresh context, different model**
+   the same conversation (non-blinded)
+3. **Adversarial review, fresh context, same model** — a fresh context window
+   of the same model reviews the patch, blind to the author's transcript
 
-Conditions 3 vs. 4 are the novel contribution: does a split context suffice,
-or are different weights required? Perplexity-based self-preference (Wataoka
-et al. 2024) predicts the latter — a fresh context window of the *same* model
-may not escape self-preference bias, which directly challenges the
-split-context-is-enough assumption in the bun post.
+Conditions 2 vs. 3 are the contribution, and they *are* H1: does splitting the
+context — a fresh window versus the author's own conversation — reduce
+regressions at all? Perplexity-based self-preference (Wataoka et al. 2024)
+predicts a fresh context of the *same* model may not fully escape
+self-preference bias, so whether condition 3 beats condition 2 is an open
+empirical question rather than the assumption the bun post treats it as.
+
+**Deferred to a future experiment: the different-model arm.** The original
+design carried a fourth condition — adversarial review by a *different* model.
+Whether different weights beat a same-model fresh context (i.e. whether the
+benefit exceeds the sum of the two models' parts) is a separate question that
+drags in cross-model confounds — capability gaps, cost asymmetry, which model
+reviews which — and roughly restores the run count this cut removes. It is spun
+out rather than answered halfway. Seed captured in
+[`../003-cross-model-review/NOTES.md`](../003-cross-model-review/NOTES.md).
 
 ### Outcome
 
@@ -92,8 +105,8 @@ regress — wasted samples); filter by test-suite strength via mutation testing.
 ### Statistics
 
 Paired design: every task runs under every condition, multiple seeds per cell;
-bootstrap the paired difference. Budget sketch: 40 tasks × 4 conditions × 3
-seeds = 480 runs. Mid-tier model via OpenRouter — cheaper AND a higher base
+bootstrap the paired difference. Budget sketch: 40 tasks × 3 conditions × 3
+seeds = 360 runs. Mid-tier model via OpenRouter — cheaper AND a higher base
 error rate means more regressions available for review to catch, i.e. more
 power.
 
@@ -109,7 +122,7 @@ Terminal-Bench team) is the switchboard:
 - verifier isolation built in: the test script runs in a sandbox and writes a
   reward; the agent never touches the verifier
 - the treatment lives in a custom agent wrapper via `--agent-import-path` —
-  four conditions = one wrapper class + a config knob orchestrating the
+  three conditions = one wrapper class + a config knob orchestrating the
   implementer → reviewer → revise loop; everything else held constant
 
 Provider: local Docker for pilots; Modal (recurring free credits) or Daytona

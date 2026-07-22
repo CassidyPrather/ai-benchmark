@@ -1,0 +1,11 @@
+A review of your patch reported the following:
+<review>
+{review}
+</review>
+
+Go through the review point by point. For each point, either fix the problem, or
+explicitly reject it with a brief reason why it is not a real defect. Then
+produce your final patch.
+
+Do not make changes unrelated to the task or the review. When you are done,
+submit your final patch exactly as instructed for this task.

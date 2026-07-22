@@ -12,6 +12,7 @@ from __future__ import annotations
 import base64
 import json
 import re
+from pathlib import Path
 from typing import TYPE_CHECKING, cast
 
 import pytest
@@ -21,14 +22,20 @@ from ai_benchmark.live_agents import (
     DEFAULT_STEP_LIMIT,
     LITELLM_PROXY_EXTRA,
     ExperimentMiniSweAgent,
+    ExperimentReviewAgent,
     MiniSweAgentLitellmProxy,
 )
 
 if TYPE_CHECKING:
-    from pathlib import Path
-
     from harbor.environments.base import BaseEnvironment
     from harbor.models.agent.context import AgentContext
+
+#: Repo-side sources the review agent ships into the sandbox, resolved from this
+#: test file so the verbatim-shipping assertions read the same bytes the wrapper
+#: does (without importing the wrapper's private path constants).
+_REPO_ROOT = Path(__file__).resolve().parents[1]
+_PROMPTS_DIR = _REPO_ROOT / "experiments" / "001-adversarial-review" / "prompts"
+_REVIEW_DRIVER_SOURCE = _REPO_ROOT / "src" / "ai_benchmark" / "review_driver.py"
 
 _UPSTREAM_INSTALL = "<upstream-install>"
 
@@ -291,3 +298,169 @@ async def test_run_writes_task_file_then_invokes_agent(tmp_path: Path) -> None:
     assert "mini-swe-agent --yolo" in agent_command
     assert "runserver" not in agent_command
     assert "--task" not in agent_command
+
+
+# --- ExperimentReviewAgent: the implement->review->revise treatment ---------
+
+
+def _review_agent(
+    tmp_path: Path,
+    *,
+    condition: object = "adversarial",
+    **kwargs: object,
+) -> ExperimentReviewAgent:
+    """Construct a real :class:`ExperimentReviewAgent` (no network at init)."""
+    return ExperimentReviewAgent(
+        logs_dir=tmp_path,
+        model_name=_MODEL,
+        condition=condition,
+        **kwargs,
+    )
+
+
+def _decode_shipped_files(setup_command: str) -> dict[str, str]:
+    """Return ``{sandbox_path: decoded_content}`` for each base64 write it does."""
+    writes = re.findall(
+        r"printf %s '([A-Za-z0-9+/=]+)' \| base64 -d > ([^\s;]+)",
+        setup_command,
+    )
+    assert writes, setup_command
+    return {path: base64.b64decode(payload).decode("utf-8") for payload, path in writes}
+
+
+def _shipped_config(setup_command: str) -> dict[str, object]:
+    """Return the parsed driver config from the shipped ``config.json``."""
+    files = _decode_shipped_files(setup_command)
+    content = next(text for path, text in files.items() if path.endswith("config.json"))
+    return json.loads(content)
+
+
+def _shipped_driver(setup_command: str) -> str:
+    """Return the shipped driver source (the ``driver.py`` write)."""
+    files = _decode_shipped_files(setup_command)
+    return next(text for path, text in files.items() if path.endswith("driver.py"))
+
+
+def test_review_name_is_distinct() -> None:
+    """The review agent is not conflatable with the implement-only arms."""
+    assert ExperimentReviewAgent.name() == "mini-swe-agent-review"
+    assert ExperimentReviewAgent.name() != ExperimentMiniSweAgent.name()
+    assert ExperimentReviewAgent.name() != MiniSweAgentLitellmProxy.name()
+
+
+@pytest.mark.parametrize("condition", ["control", "self_review", "adversarial"])
+def test_review_accepts_known_conditions(tmp_path: Path, condition: str) -> None:
+    """Each of the three conditions constructs and lands in the shipped config."""
+    agent = _review_agent(tmp_path, condition=condition)
+    setup_command, _ = agent.build_run_commands("do the thing")
+    assert _shipped_config(setup_command)["condition"] == condition
+
+
+@pytest.mark.parametrize("bad", ["different_model", "", "CONTROL", None, 3])
+def test_review_rejects_unknown_condition(tmp_path: Path, bad: object) -> None:
+    """An unknown/invalid condition is refused at construction."""
+    with pytest.raises(ValueError, match="condition must be one of"):
+        _review_agent(tmp_path, condition=bad)
+
+
+def test_review_condition_is_required(tmp_path: Path) -> None:
+    """Omitting the condition knob is a hard error (no silent default arm)."""
+    with pytest.raises(TypeError):
+        ExperimentReviewAgent(logs_dir=tmp_path, model_name=_MODEL)  # ty: ignore[missing-argument]
+
+
+def test_review_inherits_bound_validation(tmp_path: Path) -> None:
+    """The inherited Fix-1 guard still rejects an unlimited step budget."""
+    with pytest.raises(ValueError, match="step_limit"):
+        _review_agent(tmp_path, step_limit=0)
+
+
+def test_review_ships_registered_prompts_verbatim(tmp_path: Path) -> None:
+    """The shipped config embeds critique.txt and revise.txt byte-for-byte."""
+    agent = _review_agent(tmp_path)
+    setup_command, _ = agent.build_run_commands("do the thing")
+    config = _shipped_config(setup_command)
+    critique = (_PROMPTS_DIR / "critique.txt").read_text(encoding="utf-8")
+    revise = (_PROMPTS_DIR / "revise.txt").read_text(encoding="utf-8")
+    assert config["critique"] == critique
+    assert config["revise"] == revise
+
+
+def test_review_ships_driver_source(tmp_path: Path) -> None:
+    """The driver source is shipped verbatim into the sandbox."""
+    agent = _review_agent(tmp_path)
+    setup_command, _ = agent.build_run_commands("do the thing")
+    driver_source = _shipped_driver(setup_command)
+    assert driver_source == _REVIEW_DRIVER_SOURCE.read_text(encoding="utf-8")
+    assert "def run_review_experiment(" in driver_source
+
+
+def test_review_bounds_flow_into_config(tmp_path: Path) -> None:
+    """Explicit bounds (e.g. via --ak) land in the driver config."""
+    agent = _review_agent(tmp_path, step_limit=42, cost_limit=2.5)
+    setup_command, _ = agent.build_run_commands("do the thing")
+    config = _shipped_config(setup_command)
+    assert config["step_limit"] == 42
+    assert config["cost_limit"] == pytest.approx(2.5)
+
+
+def test_review_defaults_bounds_in_config(tmp_path: Path) -> None:
+    """The pinned default bounds are recorded when none are supplied."""
+    agent = _review_agent(tmp_path)
+    setup_command, _ = agent.build_run_commands("do the thing")
+    config = _shipped_config(setup_command)
+    assert config["step_limit"] == DEFAULT_STEP_LIMIT
+    assert config["cost_limit"] == pytest.approx(DEFAULT_COST_LIMIT)
+
+
+def test_review_task_never_in_any_command(tmp_path: Path) -> None:
+    """Fix-2 invariant holds for the review agent: no task text on argv.
+
+    The task (and both prompts) travel inside the base64 JSON config; neither the
+    setup command nor the driver command may contain the task text or ``--task``.
+    """
+    agent = _review_agent(tmp_path)
+    setup_command, driver_command = agent.build_run_commands(_SELF_KILL_TASK)
+    for command in (setup_command, driver_command):
+        assert "runserver" not in command
+        assert "pkill" not in command
+        assert _SELF_KILL_TASK not in command
+    assert "--task" not in driver_command
+    # But the task IS delivered intact inside the shipped config file.
+    assert _shipped_config(setup_command)["task"] == _SELF_KILL_TASK
+
+
+def test_review_driver_command_uses_mini_venv_python(tmp_path: Path) -> None:
+    """The driver runs under the mini tool venv Python, reading only the config path."""
+    agent = _review_agent(tmp_path)
+    _, driver_command = agent.build_run_commands("do the thing")
+    assert '"$(uv tool dir)/mini-swe-agent/bin/python"' in driver_command
+    # The driver and its config are addressed by path only (no task text on argv).
+    assert "driver.py" in driver_command
+    assert "config.json" in driver_command
+    # Unattended stdin so the interactive agent never blocks on a prompt.
+    assert "</dev/null" in driver_command
+
+
+def test_review_refuses_config_file(tmp_path: Path) -> None:
+    """A supplied config_file must refuse loudly, not silently skew an arm."""
+    config = tmp_path / "extra.yaml"
+    config.write_text("agent:\n  step_limit: 7\n", encoding="utf-8")
+    agent = _review_agent(tmp_path, config_file=str(config))
+    with pytest.raises(ValueError, match="config_file is not supported"):
+        agent.build_run_commands("task")
+
+
+def test_review_refuses_reasoning_effort(tmp_path: Path) -> None:
+    """reasoning_effort is not plumbed through the v1 driver, so it is refused."""
+    agent = _review_agent(tmp_path, reasoning_effort="high")
+    with pytest.raises(ValueError, match="reasoning_effort/max_tokens"):
+        agent.build_run_commands("task")
+
+
+def test_review_requires_provider_model(tmp_path: Path) -> None:
+    """A bare model name (no provider/) is rejected before any command is built."""
+    agent = _review_agent(tmp_path)
+    agent.model_name = "qwen3-coder"
+    with pytest.raises(ValueError, match="provider/model_name"):
+        agent.build_run_commands("task")

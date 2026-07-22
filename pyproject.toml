@@ -145,6 +145,13 @@ ignore = [
 "tests/**/*.py" = [
     "S101", # Allow assert in tests
 ]
+# review_driver.py runs *inside the trial sandbox* and is imported (module scope
+# only) in the repo venv where `minisweagent` is absent; every `minisweagent`
+# import is therefore deliberately deferred into a function body. PLC0415
+# (import-outside-top-level) is the intended pattern here, not a smell.
+"src/ai_benchmark/review_driver.py" = [
+    "PLC0415", # Sandbox-only imports are intentionally function-local
+]
 
 [tool.ruff.format]
 preview = true # No cowards allowed!
