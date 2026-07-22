@@ -27,7 +27,9 @@ set -a; . ./.env; set +a
 IDS="$(uv run python -c "
 import json
 b=int('$BATCH'); lo=(b-1)*20+1; hi=b*20
-d=json.load(open(r'$HERE/task-pool-django.json', encoding='utf-8'))
+# Repo-relative path (the script cd's to the repo root first): Windows-native
+# Python under 'uv run' cannot open Git-Bash '/c/...' absolute paths.
+d=json.load(open('experiments/001-adversarial-review/run-001/task-pool-django.json', encoding='utf-8'))
 print(' '.join(t['instance_id'] for t in d['pool'] if lo <= t['seeded_rank'] <= hi))
 ")"
 [ -n "$IDS" ] || { echo "FATAL: no tasks resolved for batch $BATCH" >&2; exit 1; }

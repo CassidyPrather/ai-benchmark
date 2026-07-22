@@ -124,4 +124,9 @@ cd <scratchpad> && uv run --with datasets python build_pool.py
 
 ## Amendments
 
-_(none)_
+- **2026-07-21 (pre-data, no trials had run).** Fixed a Windows path bug in
+  `run_batch.sh`: it built the pool path from Git-Bash `pwd` (`/c/...`), which
+  Windows-native Python under `uv run` cannot open, so batch 1 aborted at setup
+  before any Harbor trial started (zero spend). Switched to a repo-relative path.
+  **No change** to the task pool, conditions, outcomes, analysis, or the
+  continuation/stopping rule — runner mechanics only.
