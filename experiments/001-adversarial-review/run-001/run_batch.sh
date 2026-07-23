@@ -56,6 +56,8 @@ for COND in control self_review adversarial; do
     -m openrouter/qwen/qwen3-coder -e daytona -n "$NCONC" -o jobs -q \
     --job-name "run-001-batch${BATCH}-${COND}" \
     --ae OPENROUTER_API_KEY="$OPENROUTER_API_KEY" \
+    --environment-build-timeout 3.0 \
+    --max-retries 1 --retry-include EnvironmentStartTimeoutError \
     --ak condition="$COND" --ak step_limit=100 --ak cost_limit=1.0 --yes
   ec=$?
   nrep=$(find "jobs/run-001-batch${BATCH}-${COND}" -name report.json 2>/dev/null | wc -l | tr -d ' ')

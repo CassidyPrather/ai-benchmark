@@ -140,3 +140,19 @@ cd <scratchpad> && uv run --with datasets python build_pool.py
   export `PYTHONUTF8=1` / `PYTHONIOENCODING=utf-8` and add `-q`, plus a guard that
   aborts the batch if `control` yields zero completed trials. No change to the
   pool, conditions, outcomes, analysis, or stopping rule.
+- **2026-07-22 (sample size locked, pre-unblinding).** Target **N = 80** — the
+  full frozen pool (batches 1–4). This is the internal-pilot re-estimation:
+  decided from the batch-1 nuisance base rate (26.9% of completed trials regress)
+  and the observed per-batch cost (~$43) — using nuisance + cost only, **not** the
+  treatment effect, which remains sealed. The budget was raised (key limit and
+  account credits topped up past ~$180) specifically to cover the full pool for a
+  better-powered result. The final analysis runs **once** at N=80 after batch 4;
+  the run is neither shortened nor extended on the basis of any interim effect.
+- **2026-07-22 (batch 2 infra tuning, runner mechanics only).** Batch 1 lost
+  13.3% of trials to `EnvironmentStartTimeoutError` (Daytona sandbox-build
+  timeouts at `-n 4`), which threatens paired completeness (a task needs all three
+  conditions to form a usable triplet). Added `--environment-build-timeout 3.0`
+  and `--max-retries 1 --retry-include EnvironmentStartTimeoutError`. These affect
+  only infrastructure patience/retry of env-start failures (which make no model
+  calls and cost ~$0); no change to the pool, conditions, prompts, budgets,
+  outcomes, analysis, or stopping rule.
