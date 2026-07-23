@@ -152,6 +152,12 @@ ignore = [
 "src/ai_benchmark/review_driver.py" = [
     "PLC0415", # Sandbox-only imports are intentionally function-local
 ]
+# Per-experiment analysis scripts are standalone, run ad hoc via `uv run --with
+# scipy ... python analyze.py` -- they are deliberately not part of any importable
+# package, so the implicit-namespace-package check does not apply.
+"experiments/**/*.py" = [
+    "INP001", # Standalone experiment scripts, not a package
+]
 
 [tool.ruff.format]
 preview = true # No cowards allowed!
