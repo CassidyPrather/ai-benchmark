@@ -6,7 +6,7 @@
   <rdf:RDF xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:cc="http://creativecommons.org/ns#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
    <cc:Work>
     <dc:type rdf:resource="http://purl.org/dc/dcmitype/StillImage"/>
-    <dc:date>2026-07-27T21:23:11.459444</dc:date>
+    <dc:date>2026-07-27T21:23:12.192937</dc:date>
     <dc:format>image/svg+xml</dc:format>
     <dc:creator>
      <cc:Agent>
@@ -26,7 +26,7 @@ L 633.6 302.4
 L 633.6 0 
 L 0 0 
 z
-" style="fill: #fcfcfb"/>
+" style="fill: #1a1a19"/>
   </g>
   <g id="axes_1">
    <g id="patch_2">
@@ -35,23 +35,23 @@ L 627.264 244.944
 L 627.264 42.336 
 L 12.672 42.336 
 z
-" style="fill: #fcfcfb"/>
+" style="fill: #1a1a19"/>
    </g>
    <g id="matplotlib.axis_1">
     <g id="xtick_1">
      <g id="line2d_1">
       <path d="M 65.654069 244.944 
 L 65.654069 42.336 
-" clip-path="url(#p55192be0a7)" style="fill: none; stroke: #e1e0d9; stroke-width: 0.8; stroke-linecap: square"/>
+" clip-path="url(#p0306537fca)" style="fill: none; stroke: #2c2c2a; stroke-width: 0.8; stroke-linecap: square"/>
      </g>
      <g id="line2d_2">
       <defs>
-       <path id="m1f4ed966b1" d="M 0 0 
+       <path id="mb0cf6e388e" d="M 0 0 
 L 0 3.5 
 " style="stroke: #898781; stroke-width: 0.8"/>
       </defs>
       <g>
-       <use xlink:href="#m1f4ed966b1" x="65.654069" y="244.944" style="fill: #898781; stroke: #898781; stroke-width: 0.8"/>
+       <use xlink:href="#mb0cf6e388e" x="65.654069" y="244.944" style="fill: #898781; stroke: #898781; stroke-width: 0.8"/>
       </g>
      </g>
      <g id="text_1">
@@ -62,11 +62,11 @@ L 0 3.5
      <g id="line2d_3">
       <path d="M 171.618207 244.944 
 L 171.618207 42.336 
-" clip-path="url(#p55192be0a7)" style="fill: none; stroke: #e1e0d9; stroke-width: 0.8; stroke-linecap: square"/>
+" clip-path="url(#p0306537fca)" style="fill: none; stroke: #2c2c2a; stroke-width: 0.8; stroke-linecap: square"/>
      </g>
      <g id="line2d_4">
       <g>
-       <use xlink:href="#m1f4ed966b1" x="171.618207" y="244.944" style="fill: #898781; stroke: #898781; stroke-width: 0.8"/>
+       <use xlink:href="#mb0cf6e388e" x="171.618207" y="244.944" style="fill: #898781; stroke: #898781; stroke-width: 0.8"/>
       </g>
      </g>
      <g id="text_2">
@@ -77,11 +77,11 @@ L 171.618207 42.336
      <g id="line2d_5">
       <path d="M 277.582345 244.944 
 L 277.582345 42.336 
-" clip-path="url(#p55192be0a7)" style="fill: none; stroke: #e1e0d9; stroke-width: 0.8; stroke-linecap: square"/>
+" clip-path="url(#p0306537fca)" style="fill: none; stroke: #2c2c2a; stroke-width: 0.8; stroke-linecap: square"/>
      </g>
      <g id="line2d_6">
       <g>
-       <use xlink:href="#m1f4ed966b1" x="277.582345" y="244.944" style="fill: #898781; stroke: #898781; stroke-width: 0.8"/>
+       <use xlink:href="#mb0cf6e388e" x="277.582345" y="244.944" style="fill: #898781; stroke: #898781; stroke-width: 0.8"/>
       </g>
      </g>
      <g id="text_3">
@@ -92,11 +92,11 @@ L 277.582345 42.336
      <g id="line2d_7">
       <path d="M 383.546483 244.944 
 L 383.546483 42.336 
-" clip-path="url(#p55192be0a7)" style="fill: none; stroke: #e1e0d9; stroke-width: 0.8; stroke-linecap: square"/>
+" clip-path="url(#p0306537fca)" style="fill: none; stroke: #2c2c2a; stroke-width: 0.8; stroke-linecap: square"/>
      </g>
      <g id="line2d_8">
       <g>
-       <use xlink:href="#m1f4ed966b1" x="383.546483" y="244.944" style="fill: #898781; stroke: #898781; stroke-width: 0.8"/>
+       <use xlink:href="#mb0cf6e388e" x="383.546483" y="244.944" style="fill: #898781; stroke: #898781; stroke-width: 0.8"/>
       </g>
      </g>
      <g id="text_4">
@@ -104,43 +104,43 @@ L 383.546483 42.336
      </g>
     </g>
     <g id="text_5">
-     <text style="font-size: 10px; font-family: 'Segoe UI', 'DejaVu Sans', 'Arial', sans-serif; text-anchor: middle; fill: #52514e" x="319.968" y="274.368902" transform="rotate(-0 319.968 274.368902)">Difference in PASS_TO_PASS regression rate (percentage points)</text>
+     <text style="font-size: 10px; font-family: 'Segoe UI', 'DejaVu Sans', 'Arial', sans-serif; text-anchor: middle; fill: #c3c2b7" x="319.968" y="274.368902" transform="rotate(-0 319.968 274.368902)">Difference in PASS_TO_PASS regression rate (percentage points)</text>
     </g>
    </g>
    <g id="matplotlib.axis_2"/>
    <g id="line2d_9">
     <path d="M 277.582345 244.944 
 L 277.582345 42.336 
-" clip-path="url(#p55192be0a7)" style="fill: none; stroke: #c3c2b7; stroke-width: 1.4; stroke-linecap: square"/>
+" clip-path="url(#p0306537fca)" style="fill: none; stroke: #383835; stroke-width: 1.4; stroke-linecap: square"/>
    </g>
    <g id="patch_3">
     <path d="M 12.672 244.944 
 L 627.264 244.944 
-" style="fill: none; stroke: #c3c2b7; stroke-linejoin: miter; stroke-linecap: square"/>
+" style="fill: none; stroke: #383835; stroke-linejoin: miter; stroke-linecap: square"/>
    </g>
    <g id="line2d_10">
     <path d="M 228.67582 83.834024 
 L 456.906271 83.834024 
-" clip-path="url(#p55192be0a7)" style="fill: none; stroke: #2a78d6; stroke-width: 2; stroke-linecap: round"/>
+" clip-path="url(#p0306537fca)" style="fill: none; stroke: #3987e5; stroke-width: 2; stroke-linecap: round"/>
    </g>
    <g id="line2d_11">
     <path d="M 228.67582 89.692569 
 L 228.67582 77.97548 
-" clip-path="url(#p55192be0a7)" style="fill: none; stroke: #2a78d6; stroke-width: 2; stroke-linecap: square"/>
+" clip-path="url(#p0306537fca)" style="fill: none; stroke: #3987e5; stroke-width: 2; stroke-linecap: square"/>
    </g>
    <g id="line2d_12">
     <path d="M 456.906271 89.692569 
 L 456.906271 77.97548 
-" clip-path="url(#p55192be0a7)" style="fill: none; stroke: #2a78d6; stroke-width: 2; stroke-linecap: square"/>
+" clip-path="url(#p0306537fca)" style="fill: none; stroke: #3987e5; stroke-width: 2; stroke-linecap: square"/>
    </g>
    <g id="text_6">
-    <text style="font-weight: 700; font-size: 11px; font-family: 'Segoe UI', 'DejaVu Sans', 'Arial', sans-serif; text-anchor: start; fill: #0b0b0b" x="17.970207" y="76.07206" transform="rotate(-0 17.970207 76.07206)">Adversarial − Self-review</text>
+    <text style="font-weight: 700; font-size: 11px; font-family: 'Segoe UI', 'DejaVu Sans', 'Arial', sans-serif; text-anchor: start; fill: #ffffff" x="17.970207" y="76.07206" transform="rotate(-0 17.970207 76.07206)">Adversarial − Self-review</text>
    </g>
    <g id="text_7">
     <text style="font-size: 8.5px; font-family: 'Segoe UI', 'DejaVu Sans', 'Arial', sans-serif; text-anchor: start; fill: #898781" x="17.970207" y="97.65752" transform="rotate(-0 17.970207 97.65752)">primary · H1</text>
    </g>
    <g id="text_8">
-    <text style="font-weight: 700; font-size: 10px; font-family: 'Segoe UI', 'DejaVu Sans', 'Arial', sans-serif; text-anchor: start; fill: #0b0b0b" x="484.212414" y="75.583496" transform="rotate(-0 484.212414 75.583496)">Δ +6.2 pp</text>
+    <text style="font-weight: 700; font-size: 10px; font-family: 'Segoe UI', 'DejaVu Sans', 'Arial', sans-serif; text-anchor: start; fill: #ffffff" x="484.212414" y="75.583496" transform="rotate(-0 484.212414 75.583496)">Δ +6.2 pp</text>
    </g>
    <g id="text_9">
     <text style="font-size: 8.5px; font-family: 'Segoe UI', 'DejaVu Sans', 'Arial', sans-serif; text-anchor: start; fill: #898781" x="484.212414" y="97.719941" transform="rotate(-0 484.212414 97.719941)">p = 0.39  ·  12 discordant</text>
@@ -148,26 +148,26 @@ L 456.906271 77.97548
    <g id="line2d_13">
     <path d="M 98.258419 132.655229 
 L 342.791045 132.655229 
-" clip-path="url(#p55192be0a7)" style="fill: none; stroke: #2a78d6; stroke-width: 2; stroke-linecap: round"/>
+" clip-path="url(#p0306537fca)" style="fill: none; stroke: #3987e5; stroke-width: 2; stroke-linecap: round"/>
    </g>
    <g id="line2d_14">
     <path d="M 98.258419 138.513773 
 L 98.258419 126.796684 
-" clip-path="url(#p55192be0a7)" style="fill: none; stroke: #2a78d6; stroke-width: 2; stroke-linecap: square"/>
+" clip-path="url(#p0306537fca)" style="fill: none; stroke: #3987e5; stroke-width: 2; stroke-linecap: square"/>
    </g>
    <g id="line2d_15">
     <path d="M 342.791045 138.513773 
 L 342.791045 126.796684 
-" clip-path="url(#p55192be0a7)" style="fill: none; stroke: #2a78d6; stroke-width: 2; stroke-linecap: square"/>
+" clip-path="url(#p0306537fca)" style="fill: none; stroke: #3987e5; stroke-width: 2; stroke-linecap: square"/>
    </g>
    <g id="text_10">
-    <text style="font-size: 11px; font-family: 'Segoe UI', 'DejaVu Sans', 'Arial', sans-serif; text-anchor: start; fill: #0b0b0b" x="17.970207" y="124.828812" transform="rotate(-0 17.970207 124.828812)">Adversarial − Control</text>
+    <text style="font-size: 11px; font-family: 'Segoe UI', 'DejaVu Sans', 'Arial', sans-serif; text-anchor: start; fill: #ffffff" x="17.970207" y="124.828812" transform="rotate(-0 17.970207 124.828812)">Adversarial − Control</text>
    </g>
    <g id="text_11">
     <text style="font-size: 8.5px; font-family: 'Segoe UI', 'DejaVu Sans', 'Arial', sans-serif; text-anchor: start; fill: #898781" x="17.970207" y="146.518568" transform="rotate(-0 17.970207 146.518568)">secondary</text>
    </g>
    <g id="text_12">
-    <text style="font-size: 10px; font-family: 'Segoe UI', 'DejaVu Sans', 'Arial', sans-serif; text-anchor: start; fill: #0b0b0b" x="484.212414" y="124.404701" transform="rotate(-0 484.212414 124.404701)">Δ -4.6 pp</text>
+    <text style="font-size: 10px; font-family: 'Segoe UI', 'DejaVu Sans', 'Arial', sans-serif; text-anchor: start; fill: #ffffff" x="484.212414" y="124.404701" transform="rotate(-0 484.212414 124.404701)">Δ -4.6 pp</text>
    </g>
    <g id="text_13">
     <text style="font-size: 8.5px; font-family: 'Segoe UI', 'DejaVu Sans', 'Arial', sans-serif; text-anchor: start; fill: #898781" x="484.212414" y="146.541146" transform="rotate(-0 484.212414 146.541146)">p = 0.61  ·  15 discordant</text>
@@ -175,26 +175,26 @@ L 342.791045 126.796684
    <g id="line2d_16">
     <path d="M 65.654069 181.476434 
 L 261.28017 181.476434 
-" clip-path="url(#p55192be0a7)" style="fill: none; stroke: #2a78d6; stroke-width: 2; stroke-linecap: round"/>
+" clip-path="url(#p0306537fca)" style="fill: none; stroke: #3987e5; stroke-width: 2; stroke-linecap: round"/>
    </g>
    <g id="line2d_17">
     <path d="M 65.654069 187.334978 
 L 65.654069 175.617889 
-" clip-path="url(#p55192be0a7)" style="fill: none; stroke: #2a78d6; stroke-width: 2; stroke-linecap: square"/>
+" clip-path="url(#p0306537fca)" style="fill: none; stroke: #3987e5; stroke-width: 2; stroke-linecap: square"/>
    </g>
    <g id="line2d_18">
     <path d="M 261.28017 187.334978 
 L 261.28017 175.617889 
-" clip-path="url(#p55192be0a7)" style="fill: none; stroke: #2a78d6; stroke-width: 2; stroke-linecap: square"/>
+" clip-path="url(#p0306537fca)" style="fill: none; stroke: #3987e5; stroke-width: 2; stroke-linecap: square"/>
    </g>
    <g id="text_14">
-    <text style="font-size: 11px; font-family: 'Segoe UI', 'DejaVu Sans', 'Arial', sans-serif; text-anchor: start; fill: #0b0b0b" x="17.970207" y="173.708454" transform="rotate(-0 17.970207 173.708454)">Self-review − Control</text>
+    <text style="font-size: 11px; font-family: 'Segoe UI', 'DejaVu Sans', 'Arial', sans-serif; text-anchor: start; fill: #ffffff" x="17.970207" y="173.708454" transform="rotate(-0 17.970207 173.708454)">Self-review − Control</text>
    </g>
    <g id="text_15">
     <text style="font-size: 8.5px; font-family: 'Segoe UI', 'DejaVu Sans', 'Arial', sans-serif; text-anchor: start; fill: #898781" x="17.970207" y="195.339773" transform="rotate(-0 17.970207 195.339773)">secondary</text>
    </g>
    <g id="text_16">
-    <text style="font-size: 10px; font-family: 'Segoe UI', 'DejaVu Sans', 'Arial', sans-serif; text-anchor: start; fill: #0b0b0b" x="484.212414" y="173.225905" transform="rotate(-0 484.212414 173.225905)">Δ -10.8 pp</text>
+    <text style="font-size: 10px; font-family: 'Segoe UI', 'DejaVu Sans', 'Arial', sans-serif; text-anchor: start; fill: #ffffff" x="484.212414" y="173.225905" transform="rotate(-0 484.212414 173.225905)">Δ -10.8 pp</text>
    </g>
    <g id="text_17">
     <text style="font-size: 8.5px; font-family: 'Segoe UI', 'DejaVu Sans', 'Arial', sans-serif; text-anchor: start; fill: #898781" x="484.212414" y="195.362351" transform="rotate(-0 484.212414 195.362351)">p = 0.07  ·  11 discordant</text>
@@ -221,17 +221,17 @@ L 429.212901 217.751277
 " style="fill: none; stroke: #898781; stroke-linecap: round"/>
    </g>
    <g id="text_19">
-    <text style="font-size: 8.5px; font-family: 'Segoe UI', 'DejaVu Sans', 'Arial', sans-serif; text-anchor: middle; fill: #52514e" x="182.214621" y="232.684598" transform="rotate(-0 182.214621 232.684598)">review regressed less</text>
+    <text style="font-size: 8.5px; font-family: 'Segoe UI', 'DejaVu Sans', 'Arial', sans-serif; text-anchor: middle; fill: #c3c2b7" x="182.214621" y="232.684598" transform="rotate(-0 182.214621 232.684598)">review regressed less</text>
    </g>
    <g id="text_20">
-    <text style="font-size: 8.5px; font-family: 'Segoe UI', 'DejaVu Sans', 'Arial', sans-serif; text-anchor: middle; fill: #52514e" x="372.950069" y="232.684598" transform="rotate(-0 372.950069 232.684598)">review regressed more</text>
+    <text style="font-size: 8.5px; font-family: 'Segoe UI', 'DejaVu Sans', 'Arial', sans-serif; text-anchor: middle; fill: #c3c2b7" x="372.950069" y="232.684598" transform="rotate(-0 372.950069 232.684598)">review regressed more</text>
    </g>
    <g id="text_21">
-    <text style="font-weight: 700; font-size: 13px; font-family: 'Segoe UI', 'DejaVu Sans', 'Arial', sans-serif; text-anchor: start; fill: #0b0b0b" x="12.672" y="28.336" transform="rotate(-0 12.672 28.336)">Did review reduce regressions?  Paired difference vs. baseline, 95% CI</text>
+    <text style="font-weight: 700; font-size: 13px; font-family: 'Segoe UI', 'DejaVu Sans', 'Arial', sans-serif; text-anchor: start; fill: #ffffff" x="12.672" y="28.336" transform="rotate(-0 12.672 28.336)">Did review reduce regressions?  Paired difference vs. baseline, 95% CI</text>
    </g>
    <g id="line2d_19">
     <defs>
-     <path id="m64c68573be" d="M 0 4.5 
+     <path id="m0eaad4dbfc" d="M 0 4.5 
 C 1.193414 4.5 2.338109 4.025852 3.181981 3.181981 
 C 4.025852 2.338109 4.5 1.193414 4.5 0 
 C 4.5 -1.193414 4.025852 -2.338109 3.181981 -3.181981 
@@ -241,20 +241,20 @@ C -4.025852 -2.338109 -4.5 -1.193414 -4.5 0
 C -4.5 1.193414 -4.025852 2.338109 -3.181981 3.181981 
 C -2.338109 4.025852 -1.193414 4.5 0 4.5 
 z
-" style="stroke: #fcfcfb; stroke-width: 1.6"/>
+" style="stroke: #1a1a19; stroke-width: 1.6"/>
     </defs>
-    <g clip-path="url(#p55192be0a7)">
-     <use xlink:href="#m64c68573be" x="342.791045" y="83.834024" style="fill: #2a78d6; stroke: #fcfcfb; stroke-width: 1.6"/>
+    <g clip-path="url(#p0306537fca)">
+     <use xlink:href="#m0eaad4dbfc" x="342.791045" y="83.834024" style="fill: #3987e5; stroke: #1a1a19; stroke-width: 1.6"/>
     </g>
    </g>
    <g id="line2d_20">
-    <g clip-path="url(#p55192be0a7)">
-     <use xlink:href="#m64c68573be" x="228.67582" y="132.655229" style="fill: #2a78d6; stroke: #fcfcfb; stroke-width: 1.6"/>
+    <g clip-path="url(#p0306537fca)">
+     <use xlink:href="#m0eaad4dbfc" x="228.67582" y="132.655229" style="fill: #3987e5; stroke: #1a1a19; stroke-width: 1.6"/>
     </g>
    </g>
    <g id="line2d_21">
-    <g clip-path="url(#p55192be0a7)">
-     <use xlink:href="#m64c68573be" x="163.467119" y="181.476434" style="fill: #2a78d6; stroke: #fcfcfb; stroke-width: 1.6"/>
+    <g clip-path="url(#p0306537fca)">
+     <use xlink:href="#m0eaad4dbfc" x="163.467119" y="181.476434" style="fill: #3987e5; stroke: #1a1a19; stroke-width: 1.6"/>
     </g>
    </g>
   </g>
@@ -263,7 +263,7 @@ z
   </g>
  </g>
  <defs>
-  <clipPath id="p55192be0a7">
+  <clipPath id="p0306537fca">
    <rect x="12.672" y="42.336" width="614.592" height="202.608"/>
   </clipPath>
  </defs>

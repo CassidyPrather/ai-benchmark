@@ -30,7 +30,10 @@ import matplotlib as mpl  # ty: ignore[unresolved-import]
 mpl.use("Agg")
 import matplotlib.pyplot as plt  # ty: ignore[unresolved-import]
 
-# --- palette (dataviz skill reference instance, light surface) --------------
+# --- palette (dataviz skill reference instance; both modes are *selected*,
+# each stepped for its own surface -- references/palette.md) ------------------
+# The light values also define the module-level names (linters resolve them);
+# _apply_theme() overwrites them per render pass (light, then dark).
 SURFACE = "#fcfcfb"
 INK = "#0b0b0b"
 INK2 = "#52514e"
@@ -41,28 +44,52 @@ BLUE = "#2a78d6"  # categorical slot 1 / diverging cool pole
 ORANGE = "#eb6834"  # categorical slot 2
 RED = "#e34948"  # diverging warm pole
 
+_KEYS = ("SURFACE", "INK", "INK2", "MUTED", "GRID", "BASE", "BLUE", "ORANGE", "RED")
+_LIGHT = {k: globals()[k] for k in _KEYS}
+_DARK = {
+    "SURFACE": "#1a1a19",
+    "INK": "#ffffff",
+    "INK2": "#c3c2b7",
+    "MUTED": "#898781",
+    "GRID": "#2c2c2a",
+    "BASE": "#383835",
+    "BLUE": "#3987e5",
+    "ORANGE": "#d95926",
+    "RED": "#e66767",
+}
+_STATE = {"suffix": ""}
+
 HERE = Path(__file__).resolve().parent
 RESULTS = HERE / "run-001-results.json"
 OUT = HERE / "figures"
 
-plt.rcParams.update({
-    "figure.facecolor": SURFACE,
-    "axes.facecolor": SURFACE,
-    "savefig.facecolor": SURFACE,
+_BASE_RC = {
     "font.family": "sans-serif",
     "font.sans-serif": ["Segoe UI", "DejaVu Sans", "Arial"],
     "font.size": 10.5,
-    "text.color": INK2,
-    "axes.labelcolor": INK2,
-    "axes.edgecolor": BASE,
     "axes.linewidth": 1.0,
-    "xtick.color": MUTED,
-    "ytick.color": MUTED,
     "xtick.labelsize": 9.5,
     "ytick.labelsize": 10.5,
     "axes.titlesize": 13,
     "svg.fonttype": "none",
-})
+}
+
+
+def _apply_theme(palette: dict, suffix: str) -> None:
+    """Point the module palette + color rcParams at one theme for a render pass."""
+    globals().update(palette)
+    _STATE["suffix"] = suffix
+    plt.rcParams.update(_BASE_RC)
+    plt.rcParams.update({
+        "figure.facecolor": palette["SURFACE"],
+        "axes.facecolor": palette["SURFACE"],
+        "savefig.facecolor": palette["SURFACE"],
+        "text.color": palette["INK2"],
+        "axes.labelcolor": palette["INK2"],
+        "axes.edgecolor": palette["BASE"],
+        "xtick.color": palette["MUTED"],
+        "ytick.color": palette["MUTED"],
+    })
 
 
 def wilson(k: int, n: int, z: float = 1.959963985) -> tuple[float, float, float]:
@@ -84,7 +111,7 @@ def _spines(ax, *, left: bool = True, bottom: bool = True) -> None:
 def _save(fig, name: str) -> None:
     OUT.mkdir(exist_ok=True)
     for ext in ("svg", "png"):
-        fig.savefig(OUT / f"{name}.{ext}", dpi=200)
+        fig.savefig(OUT / f"{name}{_STATE['suffix']}.{ext}", dpi=200)
     plt.close(fig)
 
 
@@ -410,10 +437,12 @@ def fig_discordant(data: dict) -> None:
 
 def main() -> None:
     data = json.loads(RESULTS.read_text(encoding="utf-8"))
-    fig_forest(data)
-    fig_rates(data)
-    fig_discordant(data)
-    print(f"wrote figures to {OUT}")
+    for palette, suffix in ((_LIGHT, ""), (_DARK, "-dark")):
+        _apply_theme(palette, suffix)
+        fig_forest(data)
+        fig_rates(data)
+        fig_discordant(data)
+    print(f"wrote light + dark figures to {OUT}")
 
 
 if __name__ == "__main__":
