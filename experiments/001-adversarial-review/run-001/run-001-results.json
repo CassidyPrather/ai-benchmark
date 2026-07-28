@@ -1,0 +1,254 @@
+{
+  "provenance": {
+    "generated_at": "2026-07-23T10:32:24.444696+00:00",
+    "source": "jobs/run-001-batch*-*/*",
+    "pool_fingerprint": "3b18b128bc1ba8e7d9d3048b7bf28c57090ae31d05d3a03ce1321e0bcc4a83a3",
+    "bootstrap_seed": 20260721,
+    "bootstrap_iterations": 10000,
+    "conditions": [
+      "control",
+      "self_review",
+      "adversarial"
+    ],
+    "statsmodels_available": true,
+    "n_trials_total": 240,
+    "n_trials_incomplete": 21,
+    "n_trials_invalid": 0,
+    "n_trials_pool": 219,
+    "n_tasks_complete_triplet": 65,
+    "n_dropped": 15,
+    "dropped_tasks": {
+      "django__django-11265": {
+        "control": "ok",
+        "self_review": "ok",
+        "adversarial": "incomplete"
+      },
+      "django__django-11333": {
+        "control": "incomplete",
+        "self_review": "incomplete",
+        "adversarial": "incomplete"
+      },
+      "django__django-11400": {
+        "control": "incomplete",
+        "self_review": "ok",
+        "adversarial": "ok"
+      },
+      "django__django-12708": {
+        "control": "incomplete",
+        "self_review": "ok",
+        "adversarial": "ok"
+      },
+      "django__django-12713": {
+        "control": "ok",
+        "self_review": "ok",
+        "adversarial": "incomplete"
+      },
+      "django__django-13028": {
+        "control": "ok",
+        "self_review": "incomplete",
+        "adversarial": "ok"
+      },
+      "django__django-13195": {
+        "control": "ok",
+        "self_review": "ok",
+        "adversarial": "incomplete"
+      },
+      "django__django-13344": {
+        "control": "ok",
+        "self_review": "incomplete",
+        "adversarial": "incomplete"
+      },
+      "django__django-13449": {
+        "control": "ok",
+        "self_review": "ok",
+        "adversarial": "incomplete"
+      },
+      "django__django-13837": {
+        "control": "ok",
+        "self_review": "incomplete",
+        "adversarial": "ok"
+      },
+      "django__django-15629": {
+        "control": "ok",
+        "self_review": "incomplete",
+        "adversarial": "incomplete"
+      },
+      "django__django-15732": {
+        "control": "incomplete",
+        "self_review": "incomplete",
+        "adversarial": "incomplete"
+      },
+      "django__django-15957": {
+        "control": "ok",
+        "self_review": "ok",
+        "adversarial": "incomplete"
+      },
+      "django__django-16256": {
+        "control": "ok",
+        "self_review": "ok",
+        "adversarial": "incomplete"
+      },
+      "django__django-16938": {
+        "control": "incomplete",
+        "self_review": "ok",
+        "adversarial": "ok"
+      }
+    },
+    "collisions": []
+  },
+  "per_condition": {
+    "control": {
+      "n": 65,
+      "n_regressed": 16,
+      "regression_rate": 0.24615384615384617,
+      "n_f2p_resolved": 37,
+      "f2p_resolution_rate": 0.5692307692307692,
+      "n_resolved_strict": 31,
+      "strict_resolution_rate": 0.47692307692307695
+    },
+    "self_review": {
+      "n": 65,
+      "n_regressed": 9,
+      "regression_rate": 0.13846153846153847,
+      "n_f2p_resolved": 38,
+      "f2p_resolution_rate": 0.5846153846153846,
+      "n_resolved_strict": 36,
+      "strict_resolution_rate": 0.5538461538461539
+    },
+    "adversarial": {
+      "n": 65,
+      "n_regressed": 13,
+      "regression_rate": 0.2,
+      "n_f2p_resolved": 38,
+      "f2p_resolution_rate": 0.5846153846153846,
+      "n_resolved_strict": 32,
+      "strict_resolution_rate": 0.49230769230769234
+    }
+  },
+  "primary": {
+    "treatment": "adversarial",
+    "baseline": "self_review",
+    "n_tasks": 65,
+    "table": {
+      "both_regress": 5,
+      "treatment_only_regress": 8,
+      "baseline_only_regress": 4,
+      "neither_regress": 48
+    },
+    "mcnemar": {
+      "b_baseline_only": 4,
+      "c_treatment_only": 8,
+      "n_discordant": 12,
+      "p_value": 0.3876953125
+    },
+    "rate_diff": {
+      "treatment_rate": 0.2,
+      "baseline_rate": 0.13846153846153847,
+      "estimate": 0.06153846153846154,
+      "ci_lower": -0.046153846153846156,
+      "ci_upper": 0.16923076923076924,
+      "ci_level": 0.95
+    },
+    "bootstrap_seed_stream": [
+      20260721,
+      0
+    ],
+    "wilcoxon_counts": {
+      "statistic": 42.5,
+      "p_value": 0.5298538036327889
+    }
+  },
+  "secondary": {
+    "adversarial_vs_control": {
+      "treatment": "adversarial",
+      "baseline": "control",
+      "n_tasks": 65,
+      "table": {
+        "both_regress": 7,
+        "treatment_only_regress": 6,
+        "baseline_only_regress": 9,
+        "neither_regress": 43
+      },
+      "mcnemar": {
+        "b_baseline_only": 9,
+        "c_treatment_only": 6,
+        "n_discordant": 15,
+        "p_value": 0.6072387695312499
+      },
+      "rate_diff": {
+        "treatment_rate": 0.2,
+        "baseline_rate": 0.24615384615384617,
+        "estimate": -0.046153846153846156,
+        "ci_lower": -0.16923076923076924,
+        "ci_upper": 0.06153846153846154,
+        "ci_level": 0.95
+      },
+      "bootstrap_seed_stream": [
+        20260721,
+        1
+      ]
+    },
+    "self_review_vs_control": {
+      "treatment": "self_review",
+      "baseline": "control",
+      "n_tasks": 65,
+      "table": {
+        "both_regress": 7,
+        "treatment_only_regress": 2,
+        "baseline_only_regress": 9,
+        "neither_regress": 47
+      },
+      "mcnemar": {
+        "b_baseline_only": 9,
+        "c_treatment_only": 2,
+        "n_discordant": 11,
+        "p_value": 0.0654296875
+      },
+      "rate_diff": {
+        "treatment_rate": 0.13846153846153847,
+        "baseline_rate": 0.24615384615384617,
+        "estimate": -0.1076923076923077,
+        "ci_lower": -0.2,
+        "ci_upper": -0.015384615384615385,
+        "ci_level": 0.95
+      },
+      "bootstrap_seed_stream": [
+        20260721,
+        2
+      ]
+    }
+  },
+  "holm_family": {
+    "adversarial_vs_self_review": {
+      "p_raw": 0.3876953125,
+      "p_holm": 0.775390625
+    },
+    "adversarial_vs_control": {
+      "p_raw": 0.6072387695312499,
+      "p_holm": 0.775390625
+    },
+    "self_review_vs_control": {
+      "p_raw": 0.0654296875,
+      "p_holm": 0.1962890625
+    }
+  },
+  "mixed_model": {
+    "available": true,
+    "method": "BinomialBayesMixedGLM.fit_vb (variational Bayes)",
+    "reference_condition": "control",
+    "fixed_effects": {
+      "Intercept": {
+        "posterior_mean": -1.7631418921318724,
+        "posterior_sd": 0.22714151086535256
+      },
+      "C(condition, Treatment(reference='control'))[T.adversarial]": {
+        "posterior_mean": -0.44303520327403767,
+        "posterior_sd": 0.384294004117737
+      },
+      "C(condition, Treatment(reference='control'))[T.self_review]": {
+        "posterior_mean": -1.1085511375116857,
+        "posterior_sd": 0.42994789279939205
+      }
+    }
+  }
+}

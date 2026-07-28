@@ -10,6 +10,17 @@ JSON or a Markdown table.
 The whole point of Experiment 001 is measuring regressions at PASS_TO_PASS
 granularity rather than a single resolved/unresolved bit, so this parser
 deliberately preserves the individual failing test *names*, not just counts.
+
+It also emits a per-trial **validity verdict** (Fix 3 in ``HARNESS.md``). A live
+pilot trial once made **zero** model calls yet was graded as a competent-harness
+measurement of an incompetent model -- a silent, directionally biased artifact
+(PILOT-LIVE.md, Hazard 1). To stop a ``nop``-shaped result being believed, model
+arms with no model activity are flagged ``INVALID: zero-call``. The signals come
+from the mini-swe-agent trajectory (``info.model_stats.api_calls`` and whether
+any assistant turn exists); the arm *type* comes from the recorded
+``agent_info.model_info`` -- present only when a model was configured -- so the
+deterministic instruments (oracle/nop/saboteur), which legitimately make no
+calls, are never false-flagged.
 """
 
 from __future__ import annotations
@@ -25,6 +36,14 @@ if TYPE_CHECKING:
 _RESULT_FILENAME = "result.json"
 _REPORT_RELPATH = ("verifier", "report.json")
 _REWARD_RELPATH = ("verifier", "reward.txt")
+_AGENT_DIRNAME = "agent"
+#: mini-swe-agent trajectory filenames, in preference order. The committed pilot
+#: evidence is trimmed for repo hygiene; a live Harbor run writes the untrimmed
+#: file. Both carry ``info.model_stats`` and the message list verbatim.
+_TRAJECTORY_FILENAMES = (
+    "mini-swe-agent.trajectory.json",
+    "mini-swe-agent.trajectory.trimmed.json",
+)
 
 _TESTS_STATUS = "tests_status"
 _FAIL_TO_PASS = "FAIL_TO_PASS"  # noqa: S105 -- grading category, not a password
@@ -33,6 +52,9 @@ _SUCCESS = "success"
 _FAILURE = "failure"
 
 _UNKNOWN = "unknown"
+
+_VALID = "valid"
+_INVALID_ZERO_CALL = "INVALID: zero-call"
 
 
 @dataclass(frozen=True)
@@ -49,6 +71,13 @@ class TrialReport:
     :param p2p_passed: Names of PASS_TO_PASS tests that passed.
     :param p2p_failed: Names of PASS_TO_PASS tests that failed (regressions).
     :param trial_dir: The source trial directory.
+    :param is_model_arm: Whether a model was configured (``model_info`` present).
+        Deterministic instruments (oracle/nop/saboteur) are ``False`` and are
+        never flagged zero-call.
+    :param api_calls: Model calls recorded in the trajectory, or ``None`` if no
+        trajectory was found.
+    :param has_assistant_turn: Whether the trajectory contains any assistant
+        (model) turn.
     """
 
     task: str
@@ -60,6 +89,28 @@ class TrialReport:
     p2p_passed: tuple[str, ...]
     p2p_failed: tuple[str, ...]
     trial_dir: Path
+    is_model_arm: bool = False
+    api_calls: int | None = None
+    has_assistant_turn: bool = False
+
+    @property
+    def is_zero_call(self) -> bool:
+        """Whether this is a model arm that made no model calls.
+
+        A model arm is zero-call if it produced no assistant turn *or* recorded
+        ``api_calls == 0``. Both signals are kept because mini-swe-agent counts a
+        query attempt (``api_calls == 1``) even when the request raised before
+        any assistant reply -- the exact shape of the pilot's silent failure.
+        Deterministic arms are never zero-call: they make no calls by design.
+        """
+        if not self.is_model_arm:
+            return False
+        return not self.has_assistant_turn or self.api_calls == 0
+
+    @property
+    def validity(self) -> str:
+        """The per-trial validity verdict for the results table."""
+        return _INVALID_ZERO_CALL if self.is_zero_call else _VALID
 
     @property
     def f2p_pass_count(self) -> int:
@@ -86,6 +137,10 @@ class TrialReport:
         return {
             "task": self.task,
             "condition": self.condition,
+            "validity": self.validity,
+            "is_model_arm": self.is_model_arm,
+            "api_calls": self.api_calls,
+            "has_assistant_turn": self.has_assistant_turn,
             "resolved": self.resolved,
             "reward": self.reward,
             "fail_to_pass": {
@@ -109,6 +164,43 @@ def _names(status: dict[str, Any], category: str, outcome: str) -> tuple[str, ..
     if not isinstance(values, list):
         return ()
     return tuple(str(name) for name in values)
+
+
+def _read_call_stats(trial_dir: Path) -> tuple[int | None, bool]:
+    """Return ``(api_calls, has_assistant_turn)`` from the trial's trajectory.
+
+    Reads the mini-swe-agent trajectory (trimmed or full) if present. Returns
+    ``(None, False)`` when no trajectory is found -- for a model arm that is
+    treated as zero-call, since there is no evidence any call was made.
+    """
+    agent_dir = trial_dir / _AGENT_DIRNAME
+    for filename in _TRAJECTORY_FILENAMES:
+        path = agent_dir / filename
+        if not path.is_file():
+            continue
+        try:
+            trajectory: dict[str, Any] = json.loads(path.read_text(encoding="utf-8"))
+        except (OSError, ValueError):
+            return None, False
+        model_stats = (trajectory.get("info") or {}).get("model_stats") or {}
+        raw_calls = model_stats.get("api_calls")
+        api_calls = raw_calls if isinstance(raw_calls, int) else None
+        messages = trajectory.get("messages") or []
+        has_assistant_turn = any(_is_assistant_turn(message) for message in messages)
+        return api_calls, has_assistant_turn
+    return None, False
+
+
+def _is_assistant_turn(message: object) -> bool:
+    """Whether a trajectory message is a model (assistant) turn.
+
+    Covers both mini-swe-agent wire shapes: chat-completions assistant messages
+    (``role == "assistant"``) and the Responses API, where a turn is the raw
+    response object (``object == "response"``, no ``role``).
+    """
+    return isinstance(message, dict) and (
+        message.get("role") == "assistant" or message.get("object") == "response"
+    )
 
 
 def _read_reward(trial_dir: Path, result: dict[str, Any]) -> float | None:
@@ -144,6 +236,11 @@ def parse_trial(trial_dir: Path) -> TrialReport:
     task = str(result.get("task_name") or _UNKNOWN)
     agent_info = result.get("agent_info") or {}
     condition = str(agent_info.get("name") or _UNKNOWN)
+    # A model was configured iff ``model_info`` is recorded; the deterministic
+    # instruments (oracle/nop/saboteur) leave it null, so this cleanly separates
+    # "should have made calls" arms without hardcoding agent names.
+    is_model_arm = agent_info.get("model_info") is not None
+    api_calls, has_assistant_turn = _read_call_stats(trial_dir)
     reward = _read_reward(trial_dir, result)
 
     report_path = trial_dir.joinpath(*_REPORT_RELPATH)
@@ -172,6 +269,9 @@ def parse_trial(trial_dir: Path) -> TrialReport:
         p2p_passed=_names(status, _PASS_TO_PASS, _SUCCESS),
         p2p_failed=_names(status, _PASS_TO_PASS, _FAILURE),
         trial_dir=trial_dir,
+        is_model_arm=is_model_arm,
+        api_calls=api_calls,
+        has_assistant_turn=has_assistant_turn,
     )
 
 
@@ -234,19 +334,21 @@ def _format_reward(reward: float | None) -> str:
 def reports_to_markdown(reports: Sequence[TrialReport]) -> str:
     """Render *reports* as a GitHub-flavoured Markdown table.
 
-    The final column lists the names of any regressed PASS_TO_PASS tests, which
-    is the signal Experiment 001 exists to measure.
+    The ``Validity`` column carries the zero-call verdict; the final column lists
+    the names of any regressed PASS_TO_PASS tests, which is the signal
+    Experiment 001 exists to measure.
     """
     header = (
-        "| Task | Condition | Resolved | Reward | F2P pass/fail | "
+        "| Task | Condition | Validity | Resolved | Reward | F2P pass/fail | "
         "P2P pass/fail | P2P regressions |"
     )
-    divider = "| --- | --- | --- | --- | --- | --- | --- |"
+    divider = "| --- | --- | --- | --- | --- | --- | --- | --- |"
     rows = [header, divider]
     for record in reports:
         regressions = ", ".join(record.p2p_failed) if record.p2p_failed else "-"
         rows.append(
             f"| {record.task} | {record.condition} "
+            f"| {record.validity} "
             f"| {'yes' if record.resolved else 'no'} "
             f"| {_format_reward(record.reward)} "
             f"| {record.f2p_pass_count}/{record.f2p_fail_count} "

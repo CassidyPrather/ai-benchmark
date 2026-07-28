@@ -28,7 +28,9 @@ dev = [
 ]
 
 experiments = [
-    "harbor == 0.18.0",
+    # [daytona] pulls the sandbox SDK for `harbor run -e daytona`, which needs
+    # DAYTONA_API_KEY in the environment.
+    "harbor[daytona] == 0.18.0",
 ]
 
 [build-system]
@@ -142,6 +144,19 @@ ignore = [
 [tool.ruff.lint.per-file-ignores]
 "tests/**/*.py" = [
     "S101", # Allow assert in tests
+]
+# review_driver.py runs *inside the trial sandbox* and is imported (module scope
+# only) in the repo venv where `minisweagent` is absent; every `minisweagent`
+# import is therefore deliberately deferred into a function body. PLC0415
+# (import-outside-top-level) is the intended pattern here, not a smell.
+"src/ai_benchmark/review_driver.py" = [
+    "PLC0415", # Sandbox-only imports are intentionally function-local
+]
+# Per-experiment analysis scripts are standalone, run ad hoc via `uv run --with
+# scipy ... python analyze.py` -- they are deliberately not part of any importable
+# package, so the implicit-namespace-package check does not apply.
+"experiments/**/*.py" = [
+    "INP001", # Standalone experiment scripts, not a package
 ]
 
 [tool.ruff.format]

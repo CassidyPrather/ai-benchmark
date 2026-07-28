@@ -1,0 +1,17 @@
+{
+  "task": {
+    "path": "datasets\\swebench-verified\\django__django-15098",
+    "git_url": "https://github.com/laude-institute/harbor-datasets.git",
+    "git_commit_id": "86723674f04e4209ac479d0fb75d9d9f44b4377e",
+    "source": "swebench-verified"
+  },
+  "trial_name": "django__django-15098__icUFZSZ",
+  "trials_dir": "jobs\\real-15098-nop",
+  "agent": {
+    "name": "nop"
+  },
+  "environment": {
+    "type": "daytona"
+  },
+  "job_id": "fd35417c-7599-4a92-89dc-02614aba4cd8"
+}

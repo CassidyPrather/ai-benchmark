@@ -1,0 +1,16 @@
+{
+  "info": {
+    "model_stats": {"instance_cost": 0.0102, "api_calls": 5},
+    "config": {"agent": {"step_limit": 100, "cost_limit": 1.0, "mode": "yolo"}},
+    "mini_version": "2.4.5",
+    "exit_status": "Submitted"
+  },
+  "messages": [
+    {"role": "system", "content": "system prompt"},
+    {"role": "user", "content": "task"},
+    {"role": "assistant", "content": "reasoning", "tool_calls": [{"function": {"name": "bash"}}]},
+    {"role": "tool", "content": "observation"},
+    {"role": "assistant", "content": "COMPLETE_TASK_AND_SUBMIT_FINAL_OUTPUT"},
+    {"role": "exit", "content": "Submitted"}
+  ]
+}
