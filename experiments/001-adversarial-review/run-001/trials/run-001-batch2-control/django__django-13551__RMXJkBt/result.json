@@ -1,0 +1,120 @@
+{
+    "id": "90885a70-2a77-44c6-8ccc-7e947aab7b9f",
+    "task_name": "django__django-13551",
+    "trial_name": "django__django-13551__RMXJkBt",
+    "trial_uri": "file:///C:/Source/ai-benchmark/jobs/run-001-batch2-control/django__django-13551__RMXJkBt",
+    "task_id": {
+        "git_url": "https://github.com/laude-institute/harbor-datasets.git",
+        "git_commit_id": "86723674f04e4209ac479d0fb75d9d9f44b4377e",
+        "path": "datasets\\swebench-verified\\django__django-13551"
+    },
+    "source": "swebench-verified",
+    "task_checksum": "888895734db1b2dd1009c587b67836cc2489faca10412c59bfb12a2f29085a88",
+    "config": {
+        "task": {
+            "path": "datasets\\swebench-verified\\django__django-13551",
+            "git_url": "https://github.com/laude-institute/harbor-datasets.git",
+            "git_commit_id": "86723674f04e4209ac479d0fb75d9d9f44b4377e",
+            "name": null,
+            "ref": null,
+            "overwrite": false,
+            "download_dir": null,
+            "source": "swebench-verified"
+        },
+        "trial_name": "django__django-13551__RMXJkBt",
+        "trials_dir": "jobs\\run-001-batch2-control",
+        "install_only": false,
+        "timeout_multiplier": 1.0,
+        "agent_timeout_multiplier": null,
+        "verifier_timeout_multiplier": null,
+        "agent_setup_timeout_multiplier": null,
+        "environment_build_timeout_multiplier": 3.0,
+        "agent": {
+            "name": "ai_benchmark.live_agents:ExperimentReviewAgent",
+            "import_path": null,
+            "model_name": "openrouter/qwen/qwen3-coder",
+            "n_concurrent": null,
+            "concurrency_group": null,
+            "skills": [],
+            "override_timeout_sec": null,
+            "override_setup_timeout_sec": null,
+            "max_timeout_sec": null,
+            "extra_allowed_hosts": [],
+            "kwargs": {
+                "condition": "control",
+                "step_limit": 100,
+                "cost_limit": 1.0
+            },
+            "env": {
+                "OPENROUTER_API_KEY": "${OPENROUTER_API_KEY}"
+            },
+            "mcp_servers": []
+        },
+        "environment": {
+            "type": "daytona",
+            "import_path": null,
+            "force_build": false,
+            "delete": true,
+            "cpu_enforcement_policy": "auto",
+            "memory_enforcement_policy": "auto",
+            "override_cpus": null,
+            "override_memory_mb": null,
+            "override_storage_mb": null,
+            "override_gpus": null,
+            "override_tpu": null,
+            "mounts": null,
+            "extra_docker_compose": [],
+            "kwargs": {},
+            "extra_allowed_hosts": []
+        },
+        "verifier": {
+            "override_timeout_sec": null,
+            "max_timeout_sec": null,
+            "disable": false
+        },
+        "artifacts": [],
+        "extra_instruction_paths": [],
+        "job_id": "46086731-d3e1-40ec-9c88-f0bb2130f248"
+    },
+    "agent_info": {
+        "name": "mini-swe-agent-review",
+        "version": "2.4.5",
+        "model_info": {
+            "name": "qwen/qwen3-coder",
+            "provider": "openrouter"
+        }
+    },
+    "agent_result": {
+        "n_input_tokens": 293282,
+        "n_cache_tokens": 268224,
+        "n_output_tokens": 6321,
+        "cost_usd": 0.011517710000000002,
+        "rollout_details": null,
+        "metadata": null
+    },
+    "verifier_result": {
+        "rewards": {
+            "reward": 0.0
+        }
+    },
+    "exception_info": null,
+    "started_at": "2026-07-23T02:34:24.687851Z",
+    "finished_at": "2026-07-23T02:37:41.173045Z",
+    "environment_setup": {
+        "started_at": "2026-07-23T02:34:24.693111Z",
+        "finished_at": "2026-07-23T02:34:51.380761Z"
+    },
+    "agent_setup": {
+        "started_at": "2026-07-23T02:34:51.380780Z",
+        "finished_at": "2026-07-23T02:35:13.603488Z"
+    },
+    "agent_execution": {
+        "started_at": "2026-07-23T02:35:13.603541Z",
+        "finished_at": "2026-07-23T02:37:24.704931Z"
+    },
+    "verifier": {
+        "started_at": "2026-07-23T02:37:27.955626Z",
+        "finished_at": "2026-07-23T02:37:40.899713Z"
+    },
+    "step_results": null
+}

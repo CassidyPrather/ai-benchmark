@@ -1,0 +1,105 @@
+{
+    "id": "4bf18616-0901-4577-94b0-fb0d44e57b39",
+    "task_name": "django__django-15732",
+    "trial_name": "django__django-15732__sd4Q988",
+    "trial_uri": "file:///C:/Source/ai-benchmark/jobs/run-001-batch1-self_review/django__django-15732__sd4Q988",
+    "task_id": {
+        "git_url": "https://github.com/laude-institute/harbor-datasets.git",
+        "git_commit_id": "86723674f04e4209ac479d0fb75d9d9f44b4377e",
+        "path": "datasets\\swebench-verified\\django__django-15732"
+    },
+    "source": "swebench-verified",
+    "task_checksum": "7d07d6ffb6d8e1c6c10b2f9f8f04ae54969fe88ceb6377cd91fc2f8fed629436",
+    "config": {
+        "task": {
+            "path": "datasets\\swebench-verified\\django__django-15732",
+            "git_url": "https://github.com/laude-institute/harbor-datasets.git",
+            "git_commit_id": "86723674f04e4209ac479d0fb75d9d9f44b4377e",
+            "name": null,
+            "ref": null,
+            "overwrite": false,
+            "download_dir": null,
+            "source": "swebench-verified"
+        },
+        "trial_name": "django__django-15732__sd4Q988",
+        "trials_dir": "jobs\\run-001-batch1-self_review",
+        "install_only": false,
+        "timeout_multiplier": 1.0,
+        "agent_timeout_multiplier": null,
+        "verifier_timeout_multiplier": null,
+        "agent_setup_timeout_multiplier": null,
+        "environment_build_timeout_multiplier": null,
+        "agent": {
+            "name": "ai_benchmark.live_agents:ExperimentReviewAgent",
+            "import_path": null,
+            "model_name": "openrouter/qwen/qwen3-coder",
+            "n_concurrent": null,
+            "concurrency_group": null,
+            "skills": [],
+            "override_timeout_sec": null,
+            "override_setup_timeout_sec": null,
+            "max_timeout_sec": null,
+            "extra_allowed_hosts": [],
+            "kwargs": {
+                "condition": "self_review",
+                "step_limit": 100,
+                "cost_limit": 1.0
+            },
+            "env": {
+                "OPENROUTER_API_KEY": "${OPENROUTER_API_KEY}"
+            },
+            "mcp_servers": []
+        },
+        "environment": {
+            "type": "daytona",
+            "import_path": null,
+            "force_build": false,
+            "delete": true,
+            "cpu_enforcement_policy": "auto",
+            "memory_enforcement_policy": "auto",
+            "override_cpus": null,
+            "override_memory_mb": null,
+            "override_storage_mb": null,
+            "override_gpus": null,
+            "override_tpu": null,
+            "mounts": null,
+            "extra_docker_compose": [],
+            "kwargs": {},
+            "extra_allowed_hosts": []
+        },
+        "verifier": {
+            "override_timeout_sec": null,
+            "max_timeout_sec": null,
+            "disable": false
+        },
+        "artifacts": [],
+        "extra_instruction_paths": [],
+        "job_id": "e521b901-45e6-45b0-b321-5e89edeccd1b"
+    },
+    "agent_info": {
+        "name": "mini-swe-agent-review",
+        "version": "unknown",
+        "model_info": {
+            "name": "qwen/qwen3-coder",
+            "provider": "openrouter"
+        }
+    },
+    "agent_result": null,
+    "verifier_result": null,
+    "exception_info": {
+        "exception_type": "EnvironmentStartTimeoutError",
+        "exception_message": "Environment start timed out after 1800.0 seconds",
+        "exception_traceback": "Traceback (most recent call last):\n  File \"C:\\Users\\prath\\miniconda3\\Lib\\asyncio\\tasks.py\", line 507, in wait_for\n    return await fut\n           ^^^^^^^^^\n  File \"C:\\Source\\ai-benchmark\\.venv\\Lib\\site-packages\\harbor\\environments\\daytona\\environment.py\", line 1901, in start\n    return await self._strategy.start(force_build)\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"C:\\Source\\ai-benchmark\\.venv\\Lib\\site-packages\\harbor\\environments\\daytona\\environment.py\", line 326, in start\n    await env._create_sandbox(params=params, daytona=daytona)\n  File \"C:\\Source\\ai-benchmark\\.venv\\Lib\\site-packages\\tenacity\\asyncio\\__init__.py\", line 193, in async_wrapped\n    return await copy(fn, *args, **kwargs)\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"C:\\Source\\ai-benchmark\\.venv\\Lib\\site-packages\\tenacity\\asyncio\\__init__.py\", line 125, in __call__\n    await self.sleep(do)  # type: ignore[misc]\n    ^^^^^^^^^^^^^^^^^^^^\n  File \"C:\\Users\\prath\\miniconda3\\Lib\\asyncio\\tasks.py\", line 718, in sleep\n    return await future\n           ^^^^^^^^^^^^\nasyncio.exceptions.CancelledError\n\nThe above exception was the direct cause of the following exception:\n\nTraceback (most recent call last):\n  File \"C:\\Source\\ai-benchmark\\.venv\\Lib\\site-packages\\harbor\\trial\\trial.py\", line 1103, in _start_agent_environment\n    await asyncio.wait_for(\n    ...<4 lines>...\n    )\n  File \"C:\\Users\\prath\\miniconda3\\Lib\\asyncio\\tasks.py\", line 506, in wait_for\n    async with timeouts.timeout(timeout):\n               ~~~~~~~~~~~~~~~~^^^^^^^^^\n  File \"C:\\Users\\prath\\miniconda3\\Lib\\asyncio\\timeouts.py\", line 116, in __aexit__\n    raise TimeoutError from exc_val\nTimeoutError\n\nThe above exception was the direct cause of the following exception:\n\nTraceback (most recent call last):\n  File \"C:\\Source\\ai-benchmark\\.venv\\Lib\\site-packages\\harbor\\trial\\trial.py\", line 350, in run\n    await self._prepare()\n  File \"C:\\Source\\ai-benchmark\\.venv\\Lib\\site-packages\\harbor\\trial\\trial.py\", line 379, in _prepare\n    await self._setup_agent_environment()\n  File \"C:\\Source\\ai-benchmark\\.venv\\Lib\\site-packages\\harbor\\trial\\trial.py\", line 1097, in _setup_agent_environment\n    await self._start_agent_environment()\n  File \"C:\\Source\\ai-benchmark\\.venv\\Lib\\site-packages\\harbor\\trial\\trial.py\", line 1110, in _start_agent_environment\n    raise EnvironmentStartTimeoutError(\n        f\"Environment start timed out after {self._environment_build_timeout_sec} seconds\"\n    ) from exc\nharbor.trial.errors.EnvironmentStartTimeoutError: Environment start timed out after 1800.0 seconds\n",
+        "occurred_at": "2026-07-22T01:28:29.535413"
+    },
+    "started_at": "2026-07-22T07:58:29.451033Z",
+    "finished_at": "2026-07-22T08:28:29.552755Z",
+    "environment_setup": {
+        "started_at": "2026-07-22T07:58:29.524957Z",
+        "finished_at": "2026-07-22T08:28:29.530362Z"
+    },
+    "agent_setup": null,
+    "agent_execution": null,
+    "verifier": null,
+    "step_results": null
+}

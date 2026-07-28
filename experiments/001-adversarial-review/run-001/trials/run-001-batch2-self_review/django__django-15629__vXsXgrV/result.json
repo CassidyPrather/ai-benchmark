@@ -1,0 +1,105 @@
+{
+    "id": "804b2455-67c4-4ef7-be93-bce0ed1949f5",
+    "task_name": "django__django-15629",
+    "trial_name": "django__django-15629__vXsXgrV",
+    "trial_uri": "file:///C:/Source/ai-benchmark/jobs/run-001-batch2-self_review/django__django-15629__vXsXgrV",
+    "task_id": {
+        "git_url": "https://github.com/laude-institute/harbor-datasets.git",
+        "git_commit_id": "86723674f04e4209ac479d0fb75d9d9f44b4377e",
+        "path": "datasets\\swebench-verified\\django__django-15629"
+    },
+    "source": "swebench-verified",
+    "task_checksum": "b86c31b5a4521f235155d2f214de38b7427bd3418613b7ded4d7ba7e29d059a8",
+    "config": {
+        "task": {
+            "path": "datasets\\swebench-verified\\django__django-15629",
+            "git_url": "https://github.com/laude-institute/harbor-datasets.git",
+            "git_commit_id": "86723674f04e4209ac479d0fb75d9d9f44b4377e",
+            "name": null,
+            "ref": null,
+            "overwrite": false,
+            "download_dir": null,
+            "source": "swebench-verified"
+        },
+        "trial_name": "django__django-15629__vXsXgrV",
+        "trials_dir": "jobs\\run-001-batch2-self_review",
+        "install_only": false,
+        "timeout_multiplier": 1.0,
+        "agent_timeout_multiplier": null,
+        "verifier_timeout_multiplier": null,
+        "agent_setup_timeout_multiplier": null,
+        "environment_build_timeout_multiplier": 3.0,
+        "agent": {
+            "name": "ai_benchmark.live_agents:ExperimentReviewAgent",
+            "import_path": null,
+            "model_name": "openrouter/qwen/qwen3-coder",
+            "n_concurrent": null,
+            "concurrency_group": null,
+            "skills": [],
+            "override_timeout_sec": null,
+            "override_setup_timeout_sec": null,
+            "max_timeout_sec": null,
+            "extra_allowed_hosts": [],
+            "kwargs": {
+                "condition": "self_review",
+                "step_limit": 100,
+                "cost_limit": 1.0
+            },
+            "env": {
+                "OPENROUTER_API_KEY": "${OPENROUTER_API_KEY}"
+            },
+            "mcp_servers": []
+        },
+        "environment": {
+            "type": "daytona",
+            "import_path": null,
+            "force_build": false,
+            "delete": true,
+            "cpu_enforcement_policy": "auto",
+            "memory_enforcement_policy": "auto",
+            "override_cpus": null,
+            "override_memory_mb": null,
+            "override_storage_mb": null,
+            "override_gpus": null,
+            "override_tpu": null,
+            "mounts": null,
+            "extra_docker_compose": [],
+            "kwargs": {},
+            "extra_allowed_hosts": []
+        },
+        "verifier": {
+            "override_timeout_sec": null,
+            "max_timeout_sec": null,
+            "disable": false
+        },
+        "artifacts": [],
+        "extra_instruction_paths": [],
+        "job_id": "fea35667-63c4-4491-937d-33ce981e95a7"
+    },
+    "agent_info": {
+        "name": "mini-swe-agent-review",
+        "version": "unknown",
+        "model_info": {
+            "name": "qwen/qwen3-coder",
+            "provider": "openrouter"
+        }
+    },
+    "agent_result": null,
+    "verifier_result": null,
+    "exception_info": {
+        "exception_type": "DaytonaValidationError",
+        "exception_message": "Failed to create sandbox: Total memory limit exceeded. Maximum allowed: 10GiB.\nTo increase concurrency limits, upgrade your organization's Tier by visiting https://app.daytona.io/dashboard/limits.",
+        "exception_traceback": "Traceback (most recent call last):\n  File \"C:\\Source\\ai-benchmark\\.venv\\Lib\\site-packages\\harbor\\trial\\trial.py\", line 350, in run\n    await self._prepare()\n  File \"C:\\Source\\ai-benchmark\\.venv\\Lib\\site-packages\\harbor\\trial\\trial.py\", line 379, in _prepare\n    await self._setup_agent_environment()\n  File \"C:\\Source\\ai-benchmark\\.venv\\Lib\\site-packages\\harbor\\trial\\trial.py\", line 1097, in _setup_agent_environment\n    await self._start_agent_environment()\n  File \"C:\\Source\\ai-benchmark\\.venv\\Lib\\site-packages\\harbor\\trial\\trial.py\", line 1103, in _start_agent_environment\n    await asyncio.wait_for(\n    ...<4 lines>...\n    )\n  File \"C:\\Users\\prath\\miniconda3\\Lib\\asyncio\\tasks.py\", line 507, in wait_for\n    return await fut\n           ^^^^^^^^^\n  File \"C:\\Source\\ai-benchmark\\.venv\\Lib\\site-packages\\harbor\\environments\\daytona\\environment.py\", line 1901, in start\n    return await self._strategy.start(force_build)\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"C:\\Source\\ai-benchmark\\.venv\\Lib\\site-packages\\harbor\\environments\\daytona\\environment.py\", line 326, in start\n    await env._create_sandbox(params=params, daytona=daytona)\n  File \"C:\\Source\\ai-benchmark\\.venv\\Lib\\site-packages\\tenacity\\asyncio\\__init__.py\", line 193, in async_wrapped\n    return await copy(fn, *args, **kwargs)\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"C:\\Source\\ai-benchmark\\.venv\\Lib\\site-packages\\tenacity\\asyncio\\__init__.py\", line 112, in __call__\n    do = await self.iter(retry_state=retry_state)\n         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"C:\\Source\\ai-benchmark\\.venv\\Lib\\site-packages\\tenacity\\asyncio\\__init__.py\", line 157, in iter\n    result = await action(retry_state)\n             ^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"C:\\Source\\ai-benchmark\\.venv\\Lib\\site-packages\\tenacity\\_utils.py\", line 111, in inner\n    return call(*args, **kwargs)\n  File \"C:\\Source\\ai-benchmark\\.venv\\Lib\\site-packages\\tenacity\\__init__.py\", line 393, in <lambda>\n    self._add_action_func(lambda rs: rs.outcome.result())\n                                     ~~~~~~~~~~~~~~~~~^^\n  File \"C:\\Users\\prath\\miniconda3\\Lib\\concurrent\\futures\\_base.py\", line 449, in result\n    return self.__get_result()\n           ~~~~~~~~~~~~~~~~~^^\n  File \"C:\\Users\\prath\\miniconda3\\Lib\\concurrent\\futures\\_base.py\", line 401, in __get_result\n    raise self._exception\n  File \"C:\\Source\\ai-benchmark\\.venv\\Lib\\site-packages\\tenacity\\asyncio\\__init__.py\", line 116, in __call__\n    result = await fn(*args, **kwargs)\n             ^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"C:\\Source\\ai-benchmark\\.venv\\Lib\\site-packages\\harbor\\environments\\daytona\\environment.py\", line 1460, in _create_sandbox\n    self._sandbox = await asyncio.shield(create_task)\n                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"C:\\Source\\ai-benchmark\\.venv\\Lib\\site-packages\\daytona\\_utils\\errors.py\", line 199, in async_wrapper\n    process_n_raise_exception(e)\n    ~~~~~~~~~~~~~~~~~~~~~~~~~^^^\n  File \"C:\\Source\\ai-benchmark\\.venv\\Lib\\site-packages\\daytona\\_utils\\errors.py\", line 143, in process_n_raise_exception\n    raise create_daytona_error(\n    ...<5 lines>...\n    ) from None\ndaytona.common.errors.DaytonaValidationError: Failed to create sandbox: Total memory limit exceeded. Maximum allowed: 10GiB.\nTo increase concurrency limits, upgrade your organization's Tier by visiting https://app.daytona.io/dashboard/limits.\n",
+        "occurred_at": "2026-07-22T20:48:21.912691"
+    },
+    "started_at": "2026-07-23T03:03:19.906417Z",
+    "finished_at": "2026-07-23T03:48:21.939592Z",
+    "environment_setup": {
+        "started_at": "2026-07-23T03:03:19.979580Z",
+        "finished_at": "2026-07-23T03:48:21.910147Z"
+    },
+    "agent_setup": null,
+    "agent_execution": null,
+    "verifier": null,
+    "step_results": null
+}
