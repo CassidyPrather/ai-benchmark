@@ -25,9 +25,9 @@ import json
 import math
 from pathlib import Path
 
-import matplotlib  # ty: ignore[unresolved-import]
+import matplotlib as mpl  # ty: ignore[unresolved-import]
 
-matplotlib.use("Agg")
+mpl.use("Agg")
 import matplotlib.pyplot as plt  # ty: ignore[unresolved-import]
 
 # --- palette (dataviz skill reference instance, light surface) --------------
@@ -88,14 +88,21 @@ def _save(fig, name: str) -> None:
     plt.close(fig)
 
 
-CONTRASTS = ("primary", "adversarial_vs_control", "self_review_vs_control")
-
-
 def _rows(data: dict) -> list[tuple[str, str, dict, bool]]:
     return [
         ("Adversarial − Self-review", "primary · H1", data["primary"], True),
-        ("Adversarial − Control", "secondary", data["secondary"]["adversarial_vs_control"], False),
-        ("Self-review − Control", "secondary", data["secondary"]["self_review_vs_control"], False),
+        (
+            "Adversarial − Control",
+            "secondary",
+            data["secondary"]["adversarial_vs_control"],
+            False,
+        ),
+        (
+            "Self-review − Control",
+            "secondary",
+            data["secondary"]["self_review_vs_control"],
+            False,
+        ),
     ]
 
 
@@ -113,16 +120,72 @@ def fig_forest(data: dict) -> None:
             ax.plot([xend, xend], [y - 0.12, y + 0.12], color=BLUE, lw=2.0, zorder=3)
         ax.plot([est], [y], "o", ms=9, color=BLUE, mec=SURFACE, mew=1.6, zorder=4)
         weight = "bold" if primary else "normal"
-        ax.text(-24.5, y + 0.22, label, ha="left", va="center", color=INK, fontsize=11, fontweight=weight)
-        ax.text(-24.5, y - 0.24, kind, ha="left", va="center", color=MUTED, fontsize=8.5)
-        ax.text(ann_x, y + 0.22, f"Δ {est:+.1f} pp", ha="left", va="center", color=INK, fontsize=10, fontweight=weight)
-        ax.text(ann_x, y - 0.24, f"p = {p:.2f}  ·  {ndisc} discordant", ha="left", va="center", color=MUTED, fontsize=8.5)
+        ax.text(
+            -24.5,
+            y + 0.22,
+            label,
+            ha="left",
+            va="center",
+            color=INK,
+            fontsize=11,
+            fontweight=weight,
+        )
+        ax.text(
+            -24.5, y - 0.24, kind, ha="left", va="center", color=MUTED, fontsize=8.5
+        )
+        ax.text(
+            ann_x,
+            y + 0.22,
+            f"Δ {est:+.1f} pp",
+            ha="left",
+            va="center",
+            color=INK,
+            fontsize=10,
+            fontweight=weight,
+        )
+        ax.text(
+            ann_x,
+            y - 0.24,
+            f"p = {p:.2f}  ·  {ndisc} discordant",
+            ha="left",
+            va="center",
+            color=MUTED,
+            fontsize=8.5,
+        )
     ax.axvline(0, color=BASE, lw=1.4, zorder=1)
-    ax.text(0, 2.6, "no difference", ha="center", va="bottom", color=MUTED, fontsize=8.5)
-    ax.annotate("", xy=(-15, -0.7), xytext=(-3, -0.7), arrowprops={"arrowstyle": "->", "color": MUTED, "lw": 1.0})
-    ax.annotate("", xy=(15, -0.7), xytext=(3, -0.7), arrowprops={"arrowstyle": "->", "color": MUTED, "lw": 1.0})
-    ax.text(-9, -0.92, "review regressed less", ha="center", va="top", color=INK2, fontsize=8.5)
-    ax.text(9, -0.92, "review regressed more", ha="center", va="top", color=INK2, fontsize=8.5)
+    ax.text(
+        0, 2.6, "no difference", ha="center", va="bottom", color=MUTED, fontsize=8.5
+    )
+    ax.annotate(
+        "",
+        xy=(-15, -0.7),
+        xytext=(-3, -0.7),
+        arrowprops={"arrowstyle": "->", "color": MUTED, "lw": 1.0},
+    )
+    ax.annotate(
+        "",
+        xy=(15, -0.7),
+        xytext=(3, -0.7),
+        arrowprops={"arrowstyle": "->", "color": MUTED, "lw": 1.0},
+    )
+    ax.text(
+        -9,
+        -0.92,
+        "review regressed less",
+        ha="center",
+        va="top",
+        color=INK2,
+        fontsize=8.5,
+    )
+    ax.text(
+        9,
+        -0.92,
+        "review regressed more",
+        ha="center",
+        va="top",
+        color=INK2,
+        fontsize=8.5,
+    )
     ax.set_xlim(-25, 33)
     ax.set_ylim(-1.3, 2.85)
     ax.set_xticks([-20, -10, 0, 10])
@@ -131,35 +194,78 @@ def fig_forest(data: dict) -> None:
     ax.xaxis.grid(visible=True, color=GRID, lw=0.8)
     ax.set_axisbelow(True)
     _spines(ax, left=False, bottom=True)
-    ax.set_xlabel("Difference in PASS_TO_PASS regression rate (percentage points)", color=INK2, fontsize=10, labelpad=6)
-    ax.set_title("Did review reduce regressions?  Paired difference vs. baseline, 95% CI",
-                 color=INK, loc="left", pad=14, fontweight="bold")
+    ax.set_xlabel(
+        "Difference in PASS_TO_PASS regression rate (percentage points)",
+        color=INK2,
+        fontsize=10,
+        labelpad=6,
+    )
+    ax.set_title(
+        "Did review reduce regressions?  Paired difference vs. baseline, 95% CI",
+        color=INK,
+        loc="left",
+        pad=14,
+        fontweight="bold",
+    )
     fig.subplots_adjust(left=0.02, right=0.99, top=0.86, bottom=0.19)
-    fig.text(0.02, 0.03,
-             "n = 65 paired tasks.  Negative = the review arm introduced fewer regressions than its baseline.  "
-             "The primary interval spans zero.",
-             color=MUTED, fontsize=8.4, ha="left")
+    fig.text(
+        0.02,
+        0.03,
+        "n = 65 paired tasks.  Negative = the review arm introduced fewer regressions than its baseline.  "
+        "The primary interval spans zero.",
+        color=MUTED,
+        fontsize=8.4,
+        ha="left",
+    )
     _save(fig, "fig1-forest-ci")
 
 
 def fig_rates(data: dict) -> None:
     """Per-condition regression rate (Wilson CI) beside the flat resolution guardrail."""
-    order = [("control", "Control"), ("self_review", "Self-review"), ("adversarial", "Adversarial")]
+    order = [
+        ("control", "Control"),
+        ("self_review", "Self-review"),
+        ("adversarial", "Adversarial"),
+    ]
     fig, ax = plt.subplots(figsize=(7.4, 4.3))
     xs = [0, 1, 2]
     dx = 0.12
-    for color, key_k, key_rate, off, lbl in [
-        (BLUE, "n_regressed", "regression_rate", -dx, "Regression rate"),
-        (ORANGE, "n_f2p_resolved", "f2p_resolution_rate", +dx, "Resolution (F2P)"),
+    for color, key_k, off, lbl in [
+        (BLUE, "n_regressed", -dx, "Regression rate"),
+        (ORANGE, "n_f2p_resolved", +dx, "Resolution (F2P)"),
     ]:
         for x, (cond, _name) in zip(xs, order, strict=True):
             pc = data["per_condition"][cond]
             lo, mid, hi = wilson(pc[key_k], pc["n"])
-            ax.plot([x + off, x + off], [lo * 100, hi * 100], color=color, lw=2.0, solid_capstyle="round", zorder=3)
-            ax.plot([x + off], [mid * 100], "o", ms=8.5, color=color, mec=SURFACE, mew=1.5, zorder=4,
-                    label=lbl if x == 0 else None)
-            ax.text(x + off, hi * 100 + 1.8, f"{mid * 100:.0f}%", ha="center", va="bottom",
-                    color=INK, fontsize=9, fontweight="bold")
+            ax.plot(
+                [x + off, x + off],
+                [lo * 100, hi * 100],
+                color=color,
+                lw=2.0,
+                solid_capstyle="round",
+                zorder=3,
+            )
+            ax.plot(
+                [x + off],
+                [mid * 100],
+                "o",
+                ms=8.5,
+                color=color,
+                mec=SURFACE,
+                mew=1.5,
+                zorder=4,
+                label=lbl if x == 0 else None,
+            )
+            ax.text(
+                x + off,
+                hi * 100 + 1.8,
+                f"{mid * 100:.0f}%",
+                ha="center",
+                va="bottom",
+                color=INK,
+                fontsize=9,
+                fontweight="bold",
+            )
     ax.set_xticks(xs)
     ax.set_xticklabels([n for _, n in order], color=INK, fontsize=11)
     ax.set_xlim(-0.5, 2.5)
@@ -170,12 +276,29 @@ def fig_rates(data: dict) -> None:
     ax.set_axisbelow(True)
     _spines(ax, left=True, bottom=True)
     ax.set_ylabel("Rate over 65 tasks", color=INK2, fontsize=10)
-    ax.set_title("Regression rate moves a little; resolution is flat", color=INK, loc="left", pad=14, fontweight="bold")
-    ax.legend(loc="upper left", frameon=False, fontsize=9.5, handletextpad=0.4, labelcolor=INK2)
+    ax.set_title(
+        "Regression rate moves a little; resolution is flat",
+        color=INK,
+        loc="left",
+        pad=14,
+        fontweight="bold",
+    )
+    ax.legend(
+        loc="upper left",
+        frameon=False,
+        fontsize=9.5,
+        handletextpad=0.4,
+        labelcolor=INK2,
+    )
     fig.subplots_adjust(left=0.09, right=0.98, top=0.86, bottom=0.16)
-    fig.text(0.02, 0.03,
-             "Rates over 65 tasks, 95% Wilson CIs.  Resolution is flat across arms — they solved equally often.",
-             color=MUTED, fontsize=8.4, ha="left")
+    fig.text(
+        0.02,
+        0.03,
+        "Rates over 65 tasks, 95% Wilson CIs.  Resolution is flat across arms — they solved equally often.",
+        color=MUTED,
+        fontsize=8.4,
+        ha="left",
+    )
     _save(fig, "fig2-rates-guardrail")
 
 
@@ -184,18 +307,57 @@ def fig_discordant(data: dict) -> None:
     fig, ax = plt.subplots(figsize=(8.8, 4.0))
     ys = [2.6, 1.3, 0.0]
     for y, (label, kind, c, primary) in zip(ys, _rows(data), strict=True):
-        b = c["mcnemar"]["b_baseline_only"]  # only baseline regressed -> favors treatment
-        cc = c["mcnemar"]["c_treatment_only"]  # only treatment regressed -> favors baseline
+        b = c["mcnemar"][
+            "b_baseline_only"
+        ]  # only baseline regressed -> favors treatment
+        cc = c["mcnemar"][
+            "c_treatment_only"
+        ]  # only treatment regressed -> favors baseline
         concord = c["n_tasks"] - b - cc
         ax.barh(y, -b, height=0.42, color=BLUE, zorder=3)
         ax.barh(y, cc, height=0.42, color=RED, zorder=3)
         if b:
-            ax.text(-b - 0.25, y, str(b), ha="right", va="center", color=INK, fontsize=10, fontweight="bold")
+            ax.text(
+                -b - 0.25,
+                y,
+                str(b),
+                ha="right",
+                va="center",
+                color=INK,
+                fontsize=10,
+                fontweight="bold",
+            )
         if cc:
-            ax.text(cc + 0.25, y, str(cc), ha="left", va="center", color=INK, fontsize=10, fontweight="bold")
+            ax.text(
+                cc + 0.25,
+                y,
+                str(cc),
+                ha="left",
+                va="center",
+                color=INK,
+                fontsize=10,
+                fontweight="bold",
+            )
         weight = "bold" if primary else "normal"
-        ax.text(-10.7, y + 0.44, label, ha="left", va="bottom", color=INK, fontsize=10.5, fontweight=weight)
-        ax.text(10.7, y + 0.44, f"{kind}  ·  {concord} / 65 tasks agreed", ha="right", va="bottom", color=MUTED, fontsize=8.5)
+        ax.text(
+            -10.7,
+            y + 0.44,
+            label,
+            ha="left",
+            va="bottom",
+            color=INK,
+            fontsize=10.5,
+            fontweight=weight,
+        )
+        ax.text(
+            10.7,
+            y + 0.44,
+            f"{kind}  ·  {concord} / 65 tasks agreed",
+            ha="right",
+            va="bottom",
+            color=MUTED,
+            fontsize=8.5,
+        )
     ax.axvline(0, color=BASE, lw=1.4, zorder=1)
     ax.set_xlim(-11, 11)
     ax.set_ylim(-0.55, 3.75)
@@ -205,15 +367,44 @@ def fig_discordant(data: dict) -> None:
     ax.xaxis.grid(visible=True, color=GRID, lw=0.8)
     ax.set_axisbelow(True)
     _spines(ax, left=False, bottom=True)
-    ax.text(-5, 3.35, "tasks where review helped", ha="center", va="bottom", color=BLUE, fontsize=9)
-    ax.text(5, 3.35, "tasks where review hurt", ha="center", va="bottom", color=RED, fontsize=9)
-    ax.set_xlabel("Number of disagreeing (discordant) tasks", color=INK2, fontsize=10, labelpad=6)
-    ax.set_title("Every verdict rests on a handful of disagreeing tasks", color=INK, loc="left", pad=14, fontweight="bold")
+    ax.text(
+        -5,
+        3.35,
+        "tasks where review helped",
+        ha="center",
+        va="bottom",
+        color=BLUE,
+        fontsize=9,
+    )
+    ax.text(
+        5,
+        3.35,
+        "tasks where review hurt",
+        ha="center",
+        va="bottom",
+        color=RED,
+        fontsize=9,
+    )
+    ax.set_xlabel(
+        "Number of disagreeing (discordant) tasks", color=INK2, fontsize=10, labelpad=6
+    )
+    ax.set_title(
+        "Every verdict rests on a handful of disagreeing tasks",
+        color=INK,
+        loc="left",
+        pad=14,
+        fontweight="bold",
+    )
     fig.subplots_adjust(left=0.02, right=0.99, top=0.85, bottom=0.19)
-    fig.text(0.02, 0.03,
-             "Only the disagreeing tasks inform the McNemar test.  Left (blue) = only the baseline regressed;  "
-             "right (red) = only the review arm.",
-             color=MUTED, fontsize=8.4, ha="left")
+    fig.text(
+        0.02,
+        0.03,
+        "Only the disagreeing tasks inform the McNemar test.  Left (blue) = only the baseline regressed;  "
+        "right (red) = only the review arm.",
+        color=MUTED,
+        fontsize=8.4,
+        ha="left",
+    )
     _save(fig, "fig3-discordant-pairs")
 
 
