@@ -40,6 +40,18 @@ build-backend = "hatchling.build"
 [tool.hatch.version]
 source = "vcs"
 fallback-version = "0.1.0"
+# Only *release* tags may set the version. This repo also carries experiment
+# provenance tags (e.g. `run-001`, which backs a GitHub Release of the Run 001
+# transcripts). setuptools-scm's default `--match *[0-9]*` happily matches those
+# and parses `run-001` as version 1 -> `2.devN`, which is not X.Y.Z. Restricting
+# the match to digit- or v-prefixed tags makes experiment tags invisible to
+# versioning, so with no release tag yet we fall back to 0.1.0 -> `0.1.1.devN`.
+# Everything except the two --match patterns mirrors setuptools-scm's default.
+raw-options = { git_describe_command = [
+    "git", "describe", "--dirty", "--tags", "--long", "--abbrev=40",
+    "--match", "v[0-9]*",
+    "--match", "[0-9]*",
+] }
 
 [tool.hatch.build.hooks.vcs]
 version-file = "src/ai_benchmark/_version.py"
